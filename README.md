@@ -2,6 +2,9 @@
 
 [简体中文](README_zh.md)
 
+> Primary repo: <https://github.com/HLhhh/dsh-changelog-panel> ·
+> Gitee mirror: <https://gitee.com/huang-lin-java/dsh-changelog-panel>
+
 **A bilingual changelog, security-advisory, and storage panel for DeepSeek Harness.** Install it and the
 sidebar gains one entry: what changed in every release, which CVE/GHSA records affect your install, and how
 much disk space DSH itself is holding.

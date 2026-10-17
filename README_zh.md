@@ -2,6 +2,9 @@
 
 [English](README.md)
 
+> GitHub 主仓：<https://github.com/HLhhh/dsh-changelog-panel> ·
+> Gitee 镜像：<https://gitee.com/huang-lin-java/dsh-changelog-panel>
+
 **给 DeepSeek Harness 用的中英双语「更新日志 / 漏洞公告 / 存储占用」面板。** 装上之后，左侧栏多一个入口，
 点开就能看每个版本改了什么、有哪些 CVE/GHSA 影响本机、以及 DSH 在你磁盘上留下了多少东西。
 
