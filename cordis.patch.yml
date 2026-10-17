@@ -1,0 +1,7 @@
+# dsh-changelog-panel 的组合包补丁：在 Profile 现有组合之上插入本插件唯一的 Loader 行。
+# 本包不提供任何宿主服务，这行的作用只是让包作为普通插件条目出现，
+# 并让浏览器端那一半被客户端模块系统扫描到。
+
+- insert:
+    - id: ui-changelog-panel
+      name: dsh-changelog-panel

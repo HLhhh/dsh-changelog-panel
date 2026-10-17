@@ -1,0 +1,268 @@
+// SOURCES — every URL cited anywhere in the dataset, with the exact role it
+// played. verify.mjs checks that each ADVISORIES reference URL appears here and
+// that each entry here is either cited by an advisory or declared in
+// ADVISORY_COVERAGE.sources, so no dead source and no uncited citation survives.
+//
+// Plain ESM, no imports, no I/O — this module is inlined into lib/client.js.
+
+export const SOURCES = Object.freeze([
+  // ── DeepSeek Harness CVE records ─────────────────────────────────────────
+  {
+    id: 'src-nvd-82533',
+    label: L('NVD — CVE-2026-82533', 'NVD — CVE-2026-82533'),
+    url: 'https://nvd.nist.gov/vuln/detail/CVE-2026-82533',
+    kind: 'official',
+    note: L('Read through the NVD 2.0 REST API with cveId=CVE-2026-82533 on 2026-10-07; this detail-page URL is cited for humans and was confirmed reachable.', '2026-10-07 通过 NVD 2.0 REST API 以 cveId=CVE-2026-82533 读取；此详情页 URL 供人阅读，并已确认可访问。'),
+  },
+  {
+    id: 'src-mitre-cveawg-82533',
+    label: L('MITRE cveawg — CVE-2026-82533 (assigner VulnCheck)', 'MITRE cveawg — CVE-2026-82533（分配机构 VulnCheck）'),
+    url: 'https://cveawg.mitre.org/api/cve/CVE-2026-82533',
+    kind: 'official',
+    note: L('Authoritative CVE record: state PUBLISHED, affected < 0.1.2-alpha.1, CVSS v3.1 9.6 / v4.0 9.4.', '权威 CVE 记录：状态 PUBLISHED，受影响版本 < 0.1.2-alpha.1，CVSS v3.1 9.6 / v4.0 9.4。'),
+  },
+  {
+    id: 'src-nvd-101078',
+    label: L('NVD — CVE-2026-101078', 'NVD — CVE-2026-101078'),
+    url: 'https://nvd.nist.gov/vuln/detail/CVE-2026-101078',
+    kind: 'official',
+    note: L('Read through the NVD 2.0 REST API with cveId=CVE-2026-101078; CVSS v3.1 6.3 medium, affected 0.1.7-rc.0 … rc.2.', '通过 NVD 2.0 REST API 以 cveId=CVE-2026-101078 读取；CVSS v3.1 6.3 medium，受影响 0.1.7-rc.0 … rc.2。'),
+  },
+  {
+    id: 'src-mitre-cveawg-101078',
+    label: L('MITRE cveawg — CVE-2026-101078 (assigner VulDB)', 'MITRE cveawg — CVE-2026-101078（分配机构 VulDB）'),
+    url: 'https://cveawg.mitre.org/api/cve/CVE-2026-101078',
+    kind: 'official',
+    note: L('Representative of the four cveawg records fetched (101078, 101102, 101131, 101132): all PUBLISHED 2026-09-28 with enumerated affected versions and no fixed version.', '代表所获取的四条 cveawg 记录（101078、101102、101131、101132）：均为 PUBLISHED，日期 2026-09-28，列明受影响版本且未给出修复版本。'),
+  },
+  {
+    id: 'src-nvd-101102',
+    label: L('NVD — CVE-2026-101102', 'NVD — CVE-2026-101102'),
+    url: 'https://nvd.nist.gov/vuln/detail/CVE-2026-101102',
+    kind: 'official',
+    note: L('Read through the NVD 2.0 REST API; CVSS v3.1 6.3 medium, affected 0.1.0-rc.0 … rc.7.', '通过 NVD 2.0 REST API 读取；CVSS v3.1 6.3 medium，受影响 0.1.0-rc.0 … rc.7。'),
+  },
+  {
+    id: 'src-mitre-cveawg-101102',
+    label: L('MITRE cveawg — CVE-2026-101102 (assigner VulDB)', 'MITRE cveawg — CVE-2026-101102（分配机构 VulDB）'),
+    url: 'https://cveawg.mitre.org/api/cve/CVE-2026-101102',
+    kind: 'official',
+    note: L('Code Mode Sandbox run_code; description quotes the vendor\u2019s own containment-not-a-boundary note.', 'Code Mode Sandbox 的 run_code；描述引用了厂商自己 “containment, not a security boundary” 的说明。'),
+  },
+  {
+    id: 'src-nvd-101131',
+    label: L('NVD — CVE-2026-101131', 'NVD — CVE-2026-101131'),
+    url: 'https://nvd.nist.gov/vuln/detail/CVE-2026-101131',
+    kind: 'official',
+    note: L('Read through the NVD 2.0 REST API; CVSS v3.1 3.3 low, affected 0.1.5-rc.0 … rc.3.', '通过 NVD 2.0 REST API 读取；CVSS v3.1 3.3 low，受影响 0.1.5-rc.0 … rc.3。'),
+  },
+  {
+    id: 'src-mitre-cveawg-101131',
+    label: L('MITRE cveawg — CVE-2026-101131 (assigner VulDB)', 'MITRE cveawg — CVE-2026-101131（分配机构 VulDB）'),
+    url: 'https://cveawg.mitre.org/api/cve/CVE-2026-101131',
+    kind: 'official',
+    note: L('E2B_API_KEY handling in packages/e2b/e2b/src/index.ts; local access required.', 'packages/e2b/e2b/src/index.ts 中 E2B_API_KEY 的处理；需要本地访问。'),
+  },
+  {
+    id: 'src-nvd-101132',
+    label: L('NVD — CVE-2026-101132', 'NVD — CVE-2026-101132'),
+    url: 'https://nvd.nist.gov/vuln/detail/CVE-2026-101132',
+    kind: 'official',
+    note: L('Read through the NVD 2.0 REST API; CVSS v3.1 3.1 low, affected 0.1.7-rc.0 … rc.2.', '通过 NVD 2.0 REST API 读取；CVSS v3.1 3.1 low，受影响 0.1.7-rc.0 … rc.2。'),
+  },
+  {
+    id: 'src-mitre-cveawg-101132',
+    label: L('MITRE cveawg — CVE-2026-101132 (assigner VulDB)', 'MITRE cveawg — CVE-2026-101132（分配机构 VulDB）'),
+    url: 'https://cveawg.mitre.org/api/cve/CVE-2026-101132',
+    kind: 'official',
+    note: L('loadProfile path traversal via dsh.bundle.patch; carries the upstream discussions/3354 reference.', 'dsh.bundle.patch 导致的 loadProfile 路径穿越；记录中包含上游 discussions/3354 引用。'),
+  },
+  {
+    id: 'src-gh-commit-82533',
+    label: L('Fix commit 3e24087 for CVE-2026-82533', 'CVE-2026-82533 的修复提交 3e24087'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/commit/3e24087bfaeabe40b58ba2f7b936895b8f93fe27',
+    kind: 'repo',
+    note: L('NVD reference; page confirmed reachable on 2026-10-07.', 'NVD 引用；该页面于 2026-10-07 确认可访问。'),
+  },
+  {
+    id: 'src-gh-release-012a1',
+    label: L('Release dsh-v0.1.2-alpha.1', '发布 dsh-v0.1.2-alpha.1'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.2-alpha.1',
+    kind: 'repo',
+    note: L('NVD reference for the fixed version; page confirmed reachable.', '修复版本对应的 NVD 引用；该页面已确认可访问。'),
+  },
+  {
+    id: 'src-ox-82533',
+    label: L('Ox Security — analysis of CVE-2026-82533', 'Ox Security — CVE-2026-82533 分析'),
+    url: 'https://www.ox.security/blog/cve-2026-82533-deepseek-harness-ai-agent-sandbox-escape/',
+    kind: 'advisory-db',
+    note: L('NVD reference: finder\u2019s write-up of the sandbox escape.', 'NVD 引用：发现方关于该沙箱逃逸的说明文章。'),
+  },
+  {
+    id: 'src-vulncheck-82533',
+    label: L('VulnCheck advisory — DeepSeek Harness auth bypass', 'VulnCheck 安全公告 — DeepSeek Harness 认证绕过'),
+    url: 'https://www.vulncheck.com/advisories/deepseek-harness-alpha-1-authentication-bypass-via-host-header-spoofing',
+    kind: 'advisory-db',
+    note: L('NVD reference: advisory from the CVE\u2019s assigning organisation.', 'NVD 引用：来自该 CVE 分配机构的安全公告。'),
+  },
+  {
+    id: 'src-gh-discussion-853',
+    label: L('Upstream discussion #853 — dsh web UI control plane', '上游讨论 #853 — dsh Web UI 控制面'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/discussions/853',
+    kind: 'repo',
+    note: L('Titled "Security: unauthenticated local/remote code execution via the dsh web UI control plane (verified on 0.1.0-rc.6)"; kept as a related report on the CVE-2026-82533 entry, not as a separate record, because its body and remediation state could not be read.', '标题为 “Security: unauthenticated local/remote code execution via the dsh web UI control plane (verified on 0.1.0-rc.6)”；仅作为 CVE-2026-82533 条目下的相关报告保留，未单列记录，因为无法读取其正文与修复状态。'),
+  },
+  {
+    id: 'src-gh-discussion-3354',
+    label: L('Upstream discussion #3354', '上游讨论 #3354'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/discussions/3354',
+    kind: 'repo',
+    note: L('Listed as a reference by the NVD/MITRE record for CVE-2026-101132.', '被 CVE-2026-101132 的 NVD/MITRE 记录列为引用。'),
+  },
+
+  // ── Dependency advisories ────────────────────────────────────────────────
+  {
+    id: 'src-osv-6qxp',
+    label: L('OSV — GHSA-6qxp-vccf-f47h / CVE-2026-104850', 'OSV — GHSA-6qxp-vccf-f47h / CVE-2026-104850'),
+    url: 'https://api.osv.dev/v1/vulns/GHSA-6qxp-vccf-f47h',
+    kind: 'advisory-db',
+    note: L('Range: @modelcontextprotocol/client >= 2.0.0, fixed 2.2.0; severity HIGH; published 2026-10-06.', '范围：@modelcontextprotocol/client >= 2.0.0，修复于 2.2.0；严重级别 HIGH；发布于 2026-10-06。'),
+  },
+  {
+    id: 'src-ghsa-6qxp',
+    label: L('GitHub Security Advisory GHSA-6qxp-vccf-f47h', 'GitHub 安全公告 GHSA-6qxp-vccf-f47h'),
+    url: 'https://github.com/modelcontextprotocol/typescript-sdk/security/advisories/GHSA-6qxp-vccf-f47h',
+    kind: 'advisory-db',
+    note: L('Publisher advisory for the MCP TypeScript SDK; page confirmed reachable.', 'MCP TypeScript SDK 发布方的安全公告；该页面已确认可访问。'),
+  },
+  {
+    id: 'src-gh-mcp-release-220',
+    label: L('TypeScript SDK release v2.2.0', 'TypeScript SDK 发布 v2.2.0'),
+    url: 'https://github.com/modelcontextprotocol/typescript-sdk/releases/tag/v2.2.0',
+    kind: 'repo',
+    note: L('The release that carries the fix; listed as an OSV reference.', '包含修复的发布版本；被 OSV 列为引用。'),
+  },
+  {
+    id: 'src-osv-ch52',
+    label: L('OSV — GHSA-ch52-4w7c-c8xp / CVE-2026-93748', 'OSV — GHSA-ch52-4w7c-c8xp / CVE-2026-93748'),
+    url: 'https://api.osv.dev/v1/vulns/GHSA-ch52-4w7c-c8xp',
+    kind: 'advisory-db',
+    note: L('Range: introduced 0, last_affected 4.2.0; severity HIGH; no fixed version published; dated 2026-09-18.', '范围：introduced 0，last_affected 4.2.0；严重级别 HIGH；未发布修复版本；日期 2026-09-18。'),
+  },
+  {
+    id: 'src-nvd-93748',
+    label: L('NVD — CVE-2026-93748', 'NVD — CVE-2026-93748'),
+    url: 'https://nvd.nist.gov/vuln/detail/CVE-2026-93748',
+    kind: 'official',
+    note: L('Read through the NVD 2.0 REST API and cross-checked against the OSV record.', '通过 NVD 2.0 REST API 读取，并与 OSV 记录交叉核对。'),
+  },
+  {
+    id: 'src-gh-issue-hcs56',
+    label: L('Upstream issue kornelski/http-cache-semantics#56', '上游议题 kornelski/http-cache-semantics#56'),
+    url: 'https://github.com/kornelski/http-cache-semantics/issues/56',
+    kind: 'repo',
+    note: L('OSV reference for the cache-disclosure report; page confirmed reachable.', '缓存泄露报告的 OSV 引用；该页面已确认可访问。'),
+  },
+
+  // ── Harness READMEs cited by the hardening records ───────────────────────
+  {
+    id: 'src-readme-sandbox-policy',
+    label: L('README packages/sandbox/sandbox-policy', 'README packages/sandbox/sandbox-policy'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/sandbox/sandbox-policy/README.md',
+    kind: 'repo',
+    note: L('Repo-relative README of the installed @deepseek-ai/dsh-sandbox-policy 0.2.0-rc.2.', '已安装的 @deepseek-ai/dsh-sandbox-policy 0.2.0-rc.2 对应仓库路径下的 README。'),
+  },
+  {
+    id: 'src-readme-fs-sandbox',
+    label: L('README packages/fs/fs-sandbox', 'README packages/fs/fs-sandbox'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/fs/fs-sandbox/README.md',
+    kind: 'repo',
+    note: L('Repo-relative README of the installed @deepseek-ai/dsh-fs-sandbox 0.2.0-rc.2.', '已安装的 @deepseek-ai/dsh-fs-sandbox 0.2.0-rc.2 对应仓库路径下的 README。'),
+  },
+  {
+    id: 'src-readme-user-approval',
+    label: L('README packages/interaction/user-approval', 'README packages/interaction/user-approval'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/interaction/user-approval/README.md',
+    kind: 'repo',
+    note: L('Repo-relative README of the installed @deepseek-ai/dsh-user-approval 0.2.0-rc.2.', '已安装的 @deepseek-ai/dsh-user-approval 0.2.0-rc.2 对应仓库路径下的 README。'),
+  },
+  {
+    id: 'src-readme-fs-observation-policy',
+    label: L('README packages/fs/fs-observation-policy', 'README packages/fs/fs-observation-policy'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/fs/fs-observation-policy/README.md',
+    kind: 'repo',
+    note: L('Repo-relative README of the installed @deepseek-ai/dsh-fs-observation-policy 0.2.0-rc.2.', '已安装的 @deepseek-ai/dsh-fs-observation-policy 0.2.0-rc.2 对应仓库路径下的 README。'),
+  },
+  {
+    id: 'src-readme-atomic-write',
+    label: L('README packages/util/atomic-write', 'README packages/util/atomic-write'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/util/atomic-write/README.md',
+    kind: 'repo',
+    note: L('Repo-relative README of the installed @deepseek-ai/dsh-atomic-write 0.2.0-rc.2.', '已安装的 @deepseek-ai/dsh-atomic-write 0.2.0-rc.2 对应仓库路径下的 README。'),
+  },
+  {
+    id: 'src-readme-web-fetch-http',
+    label: L('README packages/web/web-fetch-http', 'README packages/web/web-fetch-http'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/web/web-fetch-http/README.md',
+    kind: 'repo',
+    note: L('Repo-relative README of the installed @deepseek-ai/dsh-web-fetch-http 0.2.0-rc.2.', '已安装的 @deepseek-ai/dsh-web-fetch-http 0.2.0-rc.2 对应仓库路径下的 README。'),
+  },
+
+  // ── Dataset-level sources (declared in ADVISORY_COVERAGE.sources) ────────
+  {
+    id: 'src-nvd-search-harness',
+    label: L('NVD 2.0 API — keywordSearch=deepseek-harness', 'NVD 2.0 API — keywordSearch=deepseek-harness'),
+    url: 'https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=deepseek-harness',
+    kind: 'official',
+    note: L('Complete NVD sweep for the product name; returned 4 records on 2026-10-07.', '针对产品名的完整 NVD 扫描；2026-10-07 返回 4 条记录。'),
+  },
+  {
+    id: 'src-nvd-search-deepseek',
+    label: L('NVD 2.0 API — keywordSearch=deepseek', 'NVD 2.0 API — keywordSearch=deepseek'),
+    url: 'https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=deepseek',
+    kind: 'official',
+    note: L('Broad sweep for anything DeepSeek-related; 16 records, only 5 concerning DeepSeek Harness.', '对所有 DeepSeek 相关内容的大范围扫描；共 16 条记录，其中仅 5 条与 DeepSeek Harness 有关。'),
+  },
+  {
+    id: 'src-osv-querybatch',
+    label: L('OSV API — querybatch', 'OSV API — querybatch'),
+    url: 'https://api.osv.dev/v1/querybatch',
+    kind: 'advisory-db',
+    note: L('Used twice: by package name for all 288 installed @deepseek-ai packages (0 hits) and by package + version for all 500 installed packages (2 hits).', '使用两次：按包名查询全部 288 个已安装 @deepseek-ai 包（0 命中），以及按包名 + 版本查询全部 500 个已安装包（2 命中）。'),
+  },
+  {
+    id: 'src-gh-advisories-api',
+    label: L('GitHub API — repository security advisories', 'GitHub API — 仓库安全公告'),
+    url: 'https://api.github.com/repos/deepseek-ai/deepseek-harness/security-advisories',
+    kind: 'advisory-db',
+    note: L('Returned an empty list on 2026-10-07: the project publishes no GitHub Security Advisories.', '2026-10-07 返回空列表：该项目未发布任何 GitHub 安全公告。'),
+  },
+  {
+    id: 'src-gh-advisories-page',
+    label: L('GitHub — repository security advisories page', 'GitHub — 仓库安全公告页面'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness/security/advisories',
+    kind: 'advisory-db',
+    note: L('Reachable and empty of GHSA identifiers, consistent with the API result.', '可访问且不含任何 GHSA 标识，与 API 结果一致。'),
+  },
+  {
+    id: 'src-npm-dsh-base',
+    label: L('npm registry — @deepseek-ai/dsh-base', 'npm 注册表 — @deepseek-ai/dsh-base'),
+    url: 'https://registry.npmjs.org/@deepseek-ai%2Fdsh-base',
+    kind: 'registry',
+    note: L('dist-tags and the `time` publish map behind every date in RELEASES.', 'RELEASES 中每个日期所依据的 dist-tags 与 `time` 发布映射。'),
+  },
+  {
+    id: 'src-npm-dsh',
+    label: L('npm registry — @deepseek-ai/dsh', 'npm 注册表 — @deepseek-ai/dsh'),
+    url: 'https://registry.npmjs.org/@deepseek-ai%2Fdsh',
+    kind: 'registry',
+    note: L('First publish timestamp and dist-tags: latest/next = 0.2.0-rc.2, alpha = 0.2.1-alpha.1.', '首次发布时间戳与 dist-tags：latest/next = 0.2.0-rc.2，alpha = 0.2.1-alpha.1。'),
+  },
+  {
+    id: 'src-gh-repo',
+    label: L('GitHub — deepseek-ai/deepseek-harness', 'GitHub — deepseek-ai/deepseek-harness'),
+    url: 'https://github.com/deepseek-ai/deepseek-harness',
+    kind: 'repo',
+    note: L('Public repository behind every packages/<…>/README.md citation; default branch is master.', '所有 packages/<…>/README.md 引用所指向的公开仓库；默认分支为 master。'),
+  },
+])

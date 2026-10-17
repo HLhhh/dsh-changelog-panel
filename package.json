@@ -1,0 +1,68 @@
+{
+  "name": "dsh-changelog-panel",
+  "version": "0.1.0",
+  "description": "Bilingual DeepSeek Harness changelog and vulnerability panel: version timeline, security advisories, and a local storage dashboard.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon.svg": "./icon.svg"
+  },
+  "files": [
+    "lib",
+    "src",
+    "locale",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "README_zh.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "data:verify": "node src/data/verify.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "changelog",
+    "security",
+    "vulnerability",
+    "panel",
+    "release-notes"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HLhhh/dsh-changelog-panel.git"
+  },
+  "homepage": "https://github.com/HLhhh/dsh-changelog-panel#readme",
+  "bugs": {
+    "url": "https://github.com/HLhhh/dsh-changelog-panel/issues"
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.0.4"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "icon": "./icon.svg"
+}

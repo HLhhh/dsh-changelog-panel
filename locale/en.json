@@ -1,0 +1,4 @@
+{
+  "title": "Changelog & Storage",
+  "description": "Bilingual DeepSeek Harness changelog and vulnerability panel, plus a storage dashboard that shows what DSH leaves on disk, how much each thing costs, and which conversation it belongs to."
+}
