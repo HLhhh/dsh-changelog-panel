@@ -4,6 +4,25 @@ All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] — 2026-10-25
+
+### Fixed
+
+- **The installed-version badge no longer goes stale after a DSH upgrade.** The host half now reads the
+  running app's version at runtime and writes it into the storage report the panel consumes; detection
+  reads the bundle `Info.plist` (`CFBundleShortVersionString`) first, falls back to the `@deepseek-ai/dsh-base`
+  manifest inside `app.asar`, and keeps the build-time value only as a fallback for a standalone render.
+  Previously the number was baked in at build time, so an upgrade kept reporting the version the bundle
+  was built against.
+- **Version detection can no longer abort the storage report.** Inside Electron the asar layer treats
+  `app.asar` as a directory, so opening it threw; the throw escaped and the whole report was replaced by an
+  error envelope. Detection is now non-throwing (it degrades to `unknown`), and a failed scan is written to
+  both report copies so the panel cannot keep presenting an older report as current.
+- **The “latest” badge marks the newest known version**, not the dataset's authored `highlight` — that flag
+  marks the build the dataset was written against, so after an upgrade an old release (e.g. `0.2.0-rc.2`)
+  kept wearing “latest”. The installed build now carries its own `installed` badge, and both can appear
+  together when you are on the newest release.
+
 ## [0.1.0] — 2026-10-17
 
 First public release.

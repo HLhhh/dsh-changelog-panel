@@ -416,6 +416,7 @@ const CSS = `
 .dshcl-storageFoot{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.2))}
 .dshcl-storageArm{font-size:11px;color:var(--dsw-alias-state-warning-primary,#c58a20)}
 .dshcl-storageArmOn{color:var(--dsw-alias-state-error-primary,#d94a4a);font-weight:600}
+.dshcl-installedPill{color:var(--dsw-alias-label-tertiary,inherit)}
 .dshcl-live{margin-top:26px;border-top:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.22));padding-top:14px}
 .dshcl-liveHead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .dshcl-liveTitle{font-size:13px;font-weight:600;color:var(--dsw-alias-label-primary,inherit);margin:0}
@@ -633,7 +634,13 @@ function ReleaseRailItem(props) {
       'div',
       { className: 'dshcl-railTop' },
       el('span', { className: 'dshcl-ver' }, release.version),
-      release.highlight ? el('span', { className: 'dshcl-newPill' }, props.t('rail.latest')) : null,
+      // "最新" is the newest KNOWN version, not the dataset's authored highlight.
+      // `highlight` marks the build the dataset was authored against, so rendering
+      // it as "latest" left an old release wearing the badge after an upgrade.
+      props.latest ? el('span', { className: 'dshcl-newPill' }, props.t('rail.latest')) : null,
+      props.installed
+        ? el('span', { className: 'dshcl-pill dshcl-installedPill' }, props.t('rail.installed'))
+        : null,
       release.channel && release.channel !== 'stable'
         ? el('span', { className: 'dshcl-pill' }, release.channel)
         : null,
@@ -936,7 +943,10 @@ function ReleaseView(props) {
       'div',
       { className: 'dshcl-secHead' },
       el('span', { className: 'dshcl-secVer' }, release.version),
-      release.highlight ? el('span', { className: 'dshcl-newPill' }, props.t('rail.latest')) : null,
+      props.latest ? el('span', { className: 'dshcl-newPill' }, props.t('rail.latest')) : null,
+      props.installed
+        ? el('span', { className: 'dshcl-pill dshcl-installedPill' }, props.t('rail.installed'))
+        : null,
       el('span', { className: 'dshcl-secDate' }, dateOf(release.date)),
     ),
     pickText(release.title, props.language)
@@ -1119,6 +1129,21 @@ function ChangelogPanel(props) {
     railReleases[0] ||
     null
   const activeVersion = version || (defaultRelease ? defaultRelease.version : null)
+  // The newest version actually known, across the bundled dataset and any live
+  // fetch. Computed, so the badge cannot disagree with the list it sits in.
+  const latestVersion = React.useMemo(() => {
+    let best = ''
+    for (const entry of railReleases) {
+      if (!entry || typeof entry.version !== 'string' || entry.version === '') continue
+      if (best === '') {
+        best = entry.version
+        continue
+      }
+      // `null` means unparseable: keep the incumbent rather than let junk win.
+      if (compareVersions(entry.version, best) === 1) best = entry.version
+    }
+    return best
+  }, [railReleases])
   const needle = query
 
   const visibleFeatures = React.useMemo(
@@ -1252,6 +1277,8 @@ function ChangelogPanel(props) {
             selected: entry.version === activeVersion,
             count: counts[entry.version] || 0,
             onSelect: selectVersion,
+            latest: entry.version === latestVersion,
+            installed: entry.version === installedVersion,
             t: t,
           }),
         ),
@@ -1270,6 +1297,8 @@ function ChangelogPanel(props) {
             })
           : el(ReleaseView, {
               release: railReleases.find((entry) => entry.version === activeVersion) || null,
+              latest: activeVersion === latestVersion,
+              installed: activeVersion === installedVersion,
               rows: visibleFeatures,
               t: t,
               language: language,
@@ -1290,6 +1319,7 @@ const zh = {
   'panel.sub': '{releases} 个版本 · {entries} 条记录',
   'rail.title': '版本',
   'rail.latest': '最新',
+  'rail.installed': '本机',
   'rail.entries': '{n} 条',
   'view.changelog': '更新日志',
   'view.security': '漏洞与安全',
@@ -1478,6 +1508,7 @@ const en = {
   'panel.sub': '{releases} releases · {entries} records',
   'rail.title': 'Releases',
   'rail.latest': 'latest',
+  'rail.installed': 'installed',
   'rail.entries': '{n} entries',
   'view.changelog': 'Changelog',
   'view.security': 'Vulnerabilities',
