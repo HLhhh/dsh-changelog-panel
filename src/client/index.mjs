@@ -1018,15 +1018,20 @@ function ChangelogPanel(props) {
    * report, so reading that report is the only way the panel can stay truthful.
    */
   const [runtimeVersion, setRuntimeVersion] = React.useState('')
-  // Runtime first, then the build-time bake, then the prop. The bake is a snapshot
-  // of the app at build time, so preferring it is what made an upgraded install
-  // report its old version.
+  // The panel must never invent an installed version. With a plugin context the
+  // report is authoritative: if it says the version is unknown, the badge says
+  // unknown too. Substituting the baked build-time version here made every machine
+  // claim the version the bundle was built against — an older install on another
+  // computer then reported itself as "latest". The baked value survives only for a
+  // standalone render, where no report exists and nothing else can be known.
   const installedVersion =
     runtimeVersion !== ''
       ? runtimeVersion
-      : typeof INSTALLED_VERSION !== 'undefined' && INSTALLED_VERSION !== 'unknown'
-        ? INSTALLED_VERSION
-        : props.installedVersion || 'unknown'
+      : props.ctx
+        ? 'unknown'
+        : typeof INSTALLED_VERSION !== 'undefined' && INSTALLED_VERSION !== 'unknown'
+          ? INSTALLED_VERSION
+          : props.installedVersion || 'unknown'
 
   const liveRef = React.useRef(live)
   liveRef.current = live
@@ -1412,6 +1417,8 @@ const zh = {
   'storage.summary.ms': '{n} 毫秒',
   'storage.summary.sessions': '会话',
   'storage.summary.sessionsValue': '{n} 个（含 {subs} 个子会话）',
+  'storage.summary.dshVersion': '本机 DSH 版本：{version}',
+  'storage.summary.dshVersionSource': '来源：{source}',
   'storage.summary.home': 'DSH 目录',
   'storage.summary.workspace': '工作区',
   'storage.reportError': '扫描器报告了错误',
@@ -1601,6 +1608,8 @@ const en = {
   'storage.summary.ms': '{n} ms',
   'storage.summary.sessions': 'Conversations',
   'storage.summary.sessionsValue': '{n} ({subs} subagents)',
+  'storage.summary.dshVersion': 'Running DSH version: {version}',
+  'storage.summary.dshVersionSource': 'source: {source}',
   'storage.summary.home': 'DSH home',
   'storage.summary.workspace': 'Workspace',
   'storage.reportError': 'The scanner reported an error',

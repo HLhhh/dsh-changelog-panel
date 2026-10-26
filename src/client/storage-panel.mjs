@@ -110,6 +110,8 @@
  *     storage.summary.ms              {n} 毫秒 / {n} ms
  *     storage.summary.sessions        会话 / Conversations
  *     storage.summary.sessionsValue   {n} 个（含 {subs} 个子会话） / {n} ({subs} subagents)
+ *     storage.summary.dshVersion      本机 DSH 版本：{version} / Running DSH version: {version}
+ *     storage.summary.dshVersionSource 来源：{source} / source: {source}
  *     storage.summary.home            DSH 目录 / DSH home
  *     storage.summary.workspace       工作区 / Workspace
  *     storage.reportError             扫描器报告了错误 / The scanner reported an error
@@ -1028,6 +1030,20 @@ function renderStorageSummary(props) {
                 t('storage.summary.workspace') + ': ' + host.workspace,
               )
             : null,
+          // The running DSH version, and — when it could not be read — why. This is
+          // the diagnostic that a report from another machine needs: a wrong badge is
+          // otherwise indistinguishable from a wrong install.
+          host === null
+            ? null
+            : el(
+                'p',
+                { className: 'dshcl-liveDate', 'data-dsh-version': String(host.dshVersion || 'unknown') },
+                t('storage.summary.dshVersion', { version: String(host.dshVersion || 'unknown') }) +
+                  (host.dshVersionSource ? ' · ' + t('storage.summary.dshVersionSource', { source: String(host.dshVersionSource) }) : '') +
+                  (Array.isArray(host.dshVersionChecked) && host.dshVersionChecked.length > 0
+                    ? ' · ' + host.dshVersionChecked.join(', ')
+                    : ''),
+              ),
         ),
   )
 }
