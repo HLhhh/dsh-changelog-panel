@@ -4,6 +4,22 @@ All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] — 2026-10-26
+
+### Fixed
+
+- **An install that is not the newest no longer reports itself as up to date.** When the host could not
+  read the running version it wrote `dshVersion: "unknown"`, and the panel fell back to the version the
+  bundle had been BUILT with. On a second machine running an older DSH that build-machine number was then
+  compared against the newest release, so the panel claimed “up to date”. With a plugin context the report
+  is now the only authority: an unknown version stays unknown (“versions not comparable”), and the baked
+  value is used solely by a standalone render that has no plugin context at all.
+- **Version detection covers every desktop platform, and the report says where the number came from.**
+  Sources are tried in order — Electron's `app.getVersion()`, the macOS bundle `Info.plist`, then the
+  `@deepseek-ai/dsh-base` and app manifests inside `app.asar` — and `host.dshVersionSource` plus
+  `host.dshVersionChecked` record what answered and what was tried. The storage dashboard prints that
+  provenance, so a wrong badge can be distinguished from a wrong install.
+
 ## [0.1.1] — 2026-10-25
 
 ### Fixed

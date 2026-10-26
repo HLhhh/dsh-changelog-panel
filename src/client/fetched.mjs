@@ -345,11 +345,17 @@ function describeRefresh(state, t, language) {
  * @returns a version string, or '' when it is unknown.
  */
 function installedVersionOf(props) {
-  // Runtime first. The bundle also bakes a version in, but that is a build-time
-  // snapshot: after the user upgrades the app it names a release they no longer
-  // run. The baked value survives only as the fallback for a standalone render.
-  const provided = props && typeof props.installedVersion === 'string' ? props.installedVersion : ''
-  if (provided !== '' && provided !== 'unknown') return provided
+  // An explicit answer always wins, INCLUDING "unknown". Falling back to the baked
+  // build-time version here was the bug that made an older install on another
+  // machine report itself as the latest: the host legitimately said "unknown", the
+  // panel substituted the version the bundle had been built against, and the badge
+  // then compared that against the newest release.
+  if (props && typeof props.installedVersion === 'string') {
+    const provided = props.installedVersion.trim()
+    return provided === '' || provided === 'unknown' ? '' : provided
+  }
+  // No answer at all means a standalone render (no plugin context): the baked value
+  // is the only thing available, and it is a labelled fallback rather than a claim.
   const baked = typeof INSTALLED_VERSION !== 'undefined' ? INSTALLED_VERSION : ''
   if (typeof baked === 'string' && baked !== '' && baked !== 'unknown') return baked
   return ''
