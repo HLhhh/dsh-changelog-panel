@@ -426,7 +426,6 @@ const CSS = `
 .dshcl-liveBtn:disabled{cursor:default;opacity:.55}
 .dshcl-liveStatus{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;line-height:18px;color:var(--dsw-alias-label-tertiary,inherit)}
 .dshcl-liveStatusOk{color:var(--dsw-alias-state-success-primary,#2f9e63)}
-.dshcl-liveStatusWarn{color:var(--dsw-alias-state-warning-primary,#c58a20)}
 .dshcl-liveStatusError{color:var(--dsw-alias-state-error-primary,#d94a4a)}
 .dshcl-liveWarn{margin:6px 0 0;padding:0;font-size:11.5px;line-height:18px;color:var(--dsw-alias-state-warning-primary,#c58a20);list-style:none}
 ul.dshcl-liveWarn li{margin:2px 0}
@@ -963,7 +962,8 @@ function ReleaseView(props) {
           'div',
           null,
           el('div', { className: 'dshcl-liveNoteHead', style: { marginTop: '18px' } }, props.t('live.officialNotes')),
-          el(renderLiveRelease, {
+          el(LiveReleaseItem, {
+            key: props.liveNotes.version || 'official-notes',
             row: props.liveNotes,
             t: props.t,
             language: props.language,
@@ -1336,8 +1336,15 @@ const zh = {
   'live.lastUpdated': '上次更新 {time}',
   'live.neverFetched': '尚未拉取官方数据（面板目前显示的是内置快照）',
   'live.error': '拉取失败',
-  'live.rateLimited': 'GitHub API 已达速率上限（未认证 60 次/小时），自动刷新已关闭',
-  'live.warning': '提示',
+  'live.notes.rateLimited': 'GitHub 发布说明暂时不可用：未认证接口每小时 60 次已用完。版本列表仍来自 npm，稍后刷新即可恢复。',
+  'live.notes.unavailable': 'GitHub 发布说明暂时不可用（网络或服务异常）。版本列表仍来自 npm。',
+  'live.notes.shortNotes': '发布说明暂不可用',
+  'live.notes.shortRegistry': '版本列表可能不完整',
+  'live.notes.registryDown': 'npm registry 暂时不可用，版本列表可能不完整（仅包含 GitHub 有发布记录的版本）。',
+  'live.notes.refused': 'GitHub 拒绝了发布说明请求（非配额原因，可能是访问频率限制或地域限制）。版本列表仍来自 npm。',
+  'live.notes.http': 'GitHub 发布说明暂时不可用（HTTP {status}）。版本列表仍来自 npm。',
+  'live.errorKeptData': '两个数据源都不可用，已保留上次数据',
+  'live.errorNoData': '两个数据源都不可用，暂无可显示的数据',
   'live.empty': '还没有数据，点「手动刷新」拉取官方更新日志。',
   'live.liveVersions': '官方已发布 {n} 个版本',
   'live.showingLatest': '列表仅显示最新 {n} 个，其余在左侧版本栏点开',
@@ -1527,8 +1534,15 @@ const en = {
   'live.lastUpdated': 'updated {time}',
   'live.neverFetched': 'Official data not fetched yet (showing the bundled snapshot)',
   'live.error': 'Refresh failed',
-  'live.rateLimited': 'GitHub API rate limit reached (60/hour unauthenticated); auto refresh turned off',
-  'live.warning': 'Notice',
+  'live.notes.rateLimited': 'GitHub release notes are temporarily unavailable: the unauthenticated API has used its 60 requests/hour. Versions still come from npm; refresh later to restore the notes.',
+  'live.notes.unavailable': 'GitHub release notes are temporarily unavailable (network or service error). Versions still come from npm.',
+  'live.notes.shortNotes': 'notes unavailable',
+  'live.notes.shortRegistry': 'version list may be incomplete',
+  'live.notes.registryDown': 'The npm registry is temporarily unavailable; the version list may be incomplete (it only includes versions with a GitHub release).',
+  'live.notes.refused': 'GitHub refused the release-notes request (not a quota issue — possibly rate limiting or a regional block). Versions still come from npm.',
+  'live.notes.http': 'GitHub release notes are temporarily unavailable (HTTP {status}). Versions still come from npm.',
+  'live.errorKeptData': 'Both sources are unavailable; keeping the last data',
+  'live.errorNoData': 'Both sources are unavailable; there is no data to show yet',
   'live.empty': 'No data yet. Use “Refresh now” to pull the official changelog.',
   'live.liveVersions': '{n} versions published officially',
   'live.showingLatest': 'showing the newest {n}; open older ones from the rail',

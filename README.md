@@ -93,7 +93,13 @@ The panel talks to two public endpoints **directly from your browser**; no third
 
 - Refreshes once on the first open of each day, plus a manual refresh button with the last refresh time
 - New versions are merged into the timeline but never overwrite the verified built-in dataset
-- Rate limiting is reported explicitly instead of failing silently
+- **Release notes are optional enrichment.** GitHub's unauthenticated API allows 60 requests/hour per IP, so
+  quota exhaustion is ordinary (shared NAT makes it likely). The version list still comes from npm and the
+  refresh still counts as successful; the panel says "release notes unavailable" instead of reporting an
+  error. Only both sources failing is an error, and the previous data is kept when there is any.
+- An unknown installed version is shown as unknown ("versions not comparable"); the panel never substitutes
+  the version the bundle was built with. The running version is read at runtime (`Info.plist`, the app
+  manifest inside `app.asar`, or Electron's `app.getVersion()`).
 
 ### Storage dashboard
 
@@ -111,7 +117,7 @@ default and only affects this panel.
 
 | Surface | Status |
 | --- | --- |
-| DeepSeek Harness | `0.2.x` (developed and tested on `0.2.1-rc.2`) |
+| DeepSeek Harness | `0.2.x` (developed and tested on `0.2.1-rc.5`) |
 | Node | `^22.19.0 \|\| >=24.0.0` |
 | Platforms | Web (browser and desktop) |
 | Dependencies | Only the peer dependency `@deepseek-ai/cordis ~4.0.4`; no host package is bundled |
@@ -120,8 +126,9 @@ default and only affects this panel.
 
 - **No npm release yet** — GitHub or a local path only
 - The built-in dataset is a point-in-time snapshot; use the manual refresh for current data
-- Live refresh needs `api.github.com` and `registry.npmjs.org` to be reachable; otherwise only the built-in
-  dataset is shown
+- Live notes need `api.github.com`; when it is rate-limited or unreachable the panel keeps working from npm
+  (versions only) and shows a localized notice. Status and provenance of the version lookup are visible in
+  the storage dashboard (`host.dshVersionSource` / `dshVersionChecked` in the report)
 - Storage figures come verbatim from the scan report; nothing is extrapolated
 - Chinese entries are paraphrases, not quotations of the original advisories — consult the linked sources
   for compliance decisions
