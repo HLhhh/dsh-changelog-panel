@@ -92,7 +92,11 @@ dsh plugin --profile web remove dsh-changelog-panel
 
 - 每天首次打开面板自动刷新一次；顶部有**手动刷新**按钮和上次刷新时间
 - 拉到的版本会并入左侧版本栏，但**不会覆盖**已核对过的内置数据集
-- 遇到速率限制会明确提示，不会静默失败
+- **发布说明是可选增强**。GitHub 未认证接口每小时 60 次/IP，配额耗尽很常见（共享 NAT 下更是如此）。
+  此时版本列表仍来自 npm、刷新仍算成功，面板只提示「发布说明暂不可用」，不报错；只有两个源都失败
+  才是错误态，且有旧数据时会保留。
+- 读不到本机版本时显示「未知」（无法比较），**不会**用构建时的版本冒充。运行版本在运行时读取
+  （`Info.plist`、`app.asar` 内的应用清单，或 Electron 的 `app.getVersion()`）。
 
 ### 存储看板
 
@@ -109,7 +113,7 @@ dsh plugin --profile web remove dsh-changelog-panel
 
 | 项 | 状态 |
 | --- | --- |
-| DeepSeek Harness | `0.2.x`（开发与实测于 `0.2.1-rc.2`） |
+| DeepSeek Harness | `0.2.x`（开发与实测于 `0.2.1-rc.5`） |
 | Node | `^22.19.0 \|\| >=24.0.0` |
 | 平台 | Web（网页版 / 桌面版） |
 | 依赖 | 仅对等依赖 `@deepseek-ai/cordis ~4.0.4`，不打包任何宿主包 |
@@ -118,7 +122,8 @@ dsh plugin --profile web remove dsh-changelog-panel
 
 - **尚未发布 npm**：只能通过 GitHub 或本地路径安装
 - 内置数据集是某个时间点的快照；要看当前版本请用「手动刷新」拉实时数据
-- 实时拉取依赖 `api.github.com` 与 `registry.npmjs.org` 的可达性；网络受限时只显示内置数据
+- 实时发布说明依赖 `api.github.com`；被限流或不可达时，面板继续用 npm 的版本列表工作，并显示本地化提示。
+  版本来源与尝试记录可在存储看板查看（报告里的 `host.dshVersionSource` / `dshVersionChecked`）
 - 存储看板的容量数字完全来自扫描当次的报告，不做推算
 - 中文条目是**转述**而非公告原文引用，正式合规判断请以外链原文为准
 

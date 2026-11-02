@@ -32,8 +32,6 @@ const RELEASES_URL = `https://api.github.com/repos/${GITHUB_REPO}/releases?per_p
 const REGISTRY_URL = `https://registry.npmjs.org/${encodeURIComponent(NPM_PACKAGE)}`
 
 const REQUEST_TIMEOUT_MS = 20000
-/** GitHub's unauthenticated budget is 60 requests/hour; below this we back off. */
-const RATE_LIMIT_FLOOR = 5
 
 // ── release-note parsing ────────────────────────────────────────────────────
 
@@ -371,23 +369,70 @@ async function fetchJson(url, signal) {
       signal: controller ? controller.signal : signal,
       headers: { accept: 'application/json' },
     })
-    const remaining = Number(response.headers && response.headers.get && response.headers.get('x-ratelimit-remaining'))
+    // `Number(null)` is 0, so a MISSING header used to be read as "budget
+    // exhausted" — every 403 then claimed the 60/hour quota was gone. Absence must
+    // stay null: it means the endpoint did not report a budget, not that it is empty.
+    const headerValue =
+      response.headers && typeof response.headers.get === 'function'
+        ? response.headers.get('x-ratelimit-remaining')
+        : null
+    const parsed = headerValue === null || headerValue === undefined || headerValue === '' ? NaN : Number(headerValue)
+    const remaining = Number.isFinite(parsed) ? parsed : null
     const body = await response.json().catch(() => null)
-    return { ok: response.ok, status: response.status, body, remaining: Number.isFinite(remaining) ? remaining : null }
+    return { ok: response.ok, status: response.status, body, remaining }
   } finally {
     clearTimeout(timer)
     if (signal && typeof signal.removeEventListener === 'function') signal.removeEventListener('abort', onAbort)
   }
 }
 
-/** Turn a failed fetch into a message a reader can act on. */
-function describeFailure(source, status, remaining) {
+/**
+ * Diagnostic for a non-GitHub source. Never mentions GitHub: the rate-limit
+ * sentence was once applied to any 403/429, so a refused npm request was reported
+ * as "GitHub API rate limit reached".
+ * @param source - label for the endpoint.
+ * @param status - HTTP status.
+ * @returns a one-line diagnostic.
+ */
+function describeHttpFailure(source, status) {
+  if (status === 403 || status === 429) return `${source}: request refused (HTTP ${status}).`
+  return `${source}: HTTP ${status}`
+}
+
+/**
+ * Diagnostic for the GitHub feed.
+ *
+ * The quota sentence is only accurate when the response actually reports an empty
+ * budget. A 403 without `x-ratelimit-remaining: 0` is an abuse/secondary limit or a
+ * refusal, and claiming "60 requests/hour used up" for it would be the same false
+ * accusation this fix exists to remove.
+ * @param status - HTTP status.
+ * @param remaining - `x-ratelimit-remaining`, or null.
+ * @returns a one-line diagnostic.
+ */
+function describeGithubFailure(status, remaining) {
   if (status === 403 || status === 429) {
     return remaining === 0
-      ? `${source}: GitHub API rate limit reached (60 requests/hour without a token). Try again later.`
-      : `${source}: request refused (HTTP ${status}).`
+      ? 'GitHub releases: GitHub API rate limit reached (60 requests/hour without a token). Try again later.'
+      : `GitHub releases: request refused (HTTP ${status}).`
   }
-  return `${source}: HTTP ${status}`
+  return `GitHub releases: HTTP ${status}`
+}
+
+/**
+ * Machine-readable failure kind, so the UI can localize without parsing English.
+ *
+ * `remaining` is load-bearing: only an exhausted budget is a rate limit. Collapsing
+ * every 403 into 'rate-limited' reintroduced the false "quota used up" message for
+ * abuse limits, IP blocks and missing headers.
+ * @param status - HTTP status, or null for a transport failure.
+ * @param remaining - `x-ratelimit-remaining`, or null.
+ * @returns 'rate-limited' | 'refused' | 'http' | 'network'.
+ */
+function failureKind(status, remaining) {
+  if (status === null || status === undefined) return 'network'
+  if (status === 403 || status === 429) return remaining === 0 ? 'rate-limited' : 'refused'
+  return 'http'
 }
 
 /**
@@ -397,20 +442,35 @@ function describeFailure(source, status, remaining) {
  * notes were fetched, and vice versa. Rate-limit exhaustion on GitHub is
  * reported as a distinct, actionable status instead of a generic error.
  * @param options - `{ signal }`.
- * @returns `{ releases, distTags, fetchedAt, warnings, rateLimited, latest }`.
+ * @returns `{ releases, distTags, fetchedAt, warnings, latest, sources }`,
+ *   `sources.*` being `{ ok, kind, status }` with kind 'ok' | 'rate-limited' |
+ *   'refused' | 'http' | 'network'.
  */
 async function fetchLiveData(options) {
   const signal = options && options.signal
   const warnings = []
-  let rateLimited = false
   let latest = null
+
+  // Structured per-source outcome. GitHub's quota is an OPTIONAL enrichment: losing
+  // it must not read as a failed refresh, because the version list comes from npm
+  // and is complete without it.
+  const sources = {
+    registry: { ok: false, kind: 'network', status: null },
+    releases: { ok: false, kind: 'network', status: null },
+  }
 
   let registry = null
   try {
     const result = await fetchJson(REGISTRY_URL, signal)
-    if (result.ok && result.body) registry = result.body
-    else warnings.push(describeFailure('npm registry', result.status, result.remaining))
+    if (result.ok && result.body) {
+      registry = result.body
+      sources.registry = { ok: true, kind: 'ok', status: result.status }
+    } else {
+      sources.registry = { ok: false, kind: failureKind(result.status, result.remaining), status: result.status }
+      warnings.push(describeHttpFailure('npm registry', result.status))
+    }
   } catch (error) {
+    sources.registry = { ok: false, kind: 'network', status: null }
     warnings.push('npm registry: ' + (error && error.message ? error.message : 'request failed'))
   }
 
@@ -419,14 +479,13 @@ async function fetchLiveData(options) {
     const result = await fetchJson(RELEASES_URL, signal)
     if (result.ok && Array.isArray(result.body)) {
       releases = result.body.map(parseGithubRelease).filter(Boolean)
-      if (result.remaining !== null && result.remaining <= RATE_LIMIT_FLOOR) rateLimited = true
-    } else if (result.status === 403 || result.status === 429) {
-      rateLimited = true
-      warnings.push(describeFailure('GitHub releases', result.status, result.remaining))
+      sources.releases = { ok: true, kind: 'ok', status: result.status }
     } else {
-      warnings.push(describeFailure('GitHub releases', result.status, result.remaining))
+      sources.releases = { ok: false, kind: failureKind(result.status, result.remaining), status: result.status }
+      warnings.push(describeGithubFailure(result.status, result.remaining))
     }
   } catch (error) {
+    sources.releases = { ok: false, kind: 'network', status: null }
     warnings.push('GitHub releases: ' + (error && error.message ? error.message : 'request failed'))
   }
 
@@ -442,8 +501,8 @@ async function fetchLiveData(options) {
     releases: merged.releases,
     distTags: merged.distTags,
     latest,
-    rateLimited,
     warnings,
+    sources,
     fetchedAt: new Date().toISOString(),
   }
 }

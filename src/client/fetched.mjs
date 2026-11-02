@@ -3,7 +3,7 @@
  * version am I on" badge, and the fetched release-notes view.
  *
  * Split out of `index.mjs` so the network-facing behaviour can be reasoned about
- * (and tested) on its own. `tests/build.mjs` concatenates this file into one
+ * (and tested) on its own. The build script concatenates this file into one
  * scope with `live-data.mjs` and `index.mjs`, so it imports nothing:
  * `fetchLiveData`, `pickText`, `isArray`, `el` and `React` are plain in-scope
  * bindings, and so are the build-time `RELEASES` and `INSTALLED_VERSION`.
@@ -15,18 +15,19 @@
  *     .dshcl-verState with .dshcl-verStateOk / Behind / Ahead / Unknown,
  *     .dshcl-live, .dshcl-liveHead, .dshcl-liveTitle, .dshcl-liveControls,
  *     .dshcl-liveBtn,
- *     .dshcl-liveStatus with .dshcl-liveStatusOk / Warn / Error,
+ *     .dshcl-liveStatus with .dshcl-liveStatusOk / Error,
  *     .dshcl-liveWarn, .dshcl-liveRelease, .dshcl-liveReleaseHead,
  *     .dshcl-liveDate, .dshcl-liveNoteHead, .dshcl-liveItem,
  *     .dshcl-liveItemText, .dshcl-liveCredits,
  *   plus the shared .dshcl-group, .dshcl-items, .dshcl-count, .dshcl-pill,
  *   .dshcl-tag, .dshcl-empty, .dshcl-ref and .dshcl-ver (release version text).
  *
- * - No new dictionary keys. The keys consumed, all present in the dictionaries:
+ * - Dictionary keys consumed, all present in both dictionaries:
  *     live.title, live.refresh, live.refreshing, live.auto, live.autoOn,
  *     live.autoOff, live.interval, live.everyMinutes, live.everyHours,
- *     live.lastUpdated, live.neverFetched, live.error, live.rateLimited,
- *     live.warning, live.empty, live.liveVersions, live.officialNotes,
+ *     live.lastUpdated, live.neverFetched, live.error, live.errorKeptData,
+ *     live.errorNoData, live.empty,
+ *     live.liveVersions, live.officialNotes, live.notes.* (long and short forms),
  *     live.noNotes, live.noChinese, live.version.current, live.version.latest,
  *     live.version.upToDate, live.version.behind, live.version.ahead,
  *     live.version.unknown, note.new, note.improved, note.fixed, note.other.
@@ -64,7 +65,6 @@ const LIVE_STATUS_CLASS = {
   idle: 'dshcl-liveStatus',
   busy: 'dshcl-liveStatus',
   ok: 'dshcl-liveStatus dshcl-liveStatusOk',
-  warn: 'dshcl-liveStatus dshcl-liveStatusWarn',
   error: 'dshcl-liveStatus dshcl-liveStatusError',
 }
 
@@ -182,8 +182,6 @@ function createLiveState(cached) {
     data: restored,
     error: '',
     lastAttemptAt: restored && typeof restored.fetchedAt === 'string' ? restored.fetchedAt : null,
-    rateLimited: false,
-    warnings: restored && isArray(restored.warnings) ? restored.warnings : [],
   }
 }
 
@@ -231,8 +229,6 @@ function runRefresh(options) {
         status: 'ok',
         data: data,
         error: '',
-        rateLimited: data && data.rateLimited === true,
-        warnings: isArray(data && data.warnings) ? data.warnings : [],
         lastAttemptAt: attemptedAt,
       }
     } catch (error) {
@@ -283,6 +279,34 @@ function formatTimestamp(iso, language) {
 }
 
 /**
+ * What is degraded about the last fetch: one `{ key, params }` per degraded source.
+ *
+ * Both sources are symmetric on purpose. An earlier version hinted only when the
+ * GitHub notes were down, so a failed npm registry passed silently: the list was
+ * then built from GitHub releases alone and could omit versions that have no
+ * release — a quieter lie than an error. The kind is mapped here, once, so the
+ * status line and the section body cannot drift apart.
+ * @param state - the refresh state; `sources` lives on the payload it carries.
+ * @returns the notices to render (empty when nothing is degraded).
+ */
+function sourceNotices(state) {
+  const payload = state && state.data ? state.data : null
+  const sources = payload && payload.sources && typeof payload.sources === 'object' ? payload.sources : null
+  if (sources === null) return []
+  const out = []
+  const registry = sources.registry
+  if (registry && registry.ok === false) out.push({ key: 'live.notes.registryDown', params: {} })
+  const releases = sources.releases
+  if (releases && releases.ok === false) {
+    if (releases.kind === 'rate-limited') out.push({ key: 'live.notes.rateLimited', params: {} })
+    else if (releases.kind === 'refused') out.push({ key: 'live.notes.refused', params: {} })
+    else if (releases.kind === 'http') out.push({ key: 'live.notes.http', params: { status: String(releases.status === undefined ? '' : releases.status) } })
+    else out.push({ key: 'live.notes.unavailable', params: {} })
+  }
+  return out
+}
+
+/**
  * Build the status line for the refresh controls.
  *
  * `lastAttemptAt` is reported for every state that has one — including a failed
@@ -291,13 +315,13 @@ function formatTimestamp(iso, language) {
  * @param state - the refresh state.
  * @param t - the panel's translator, bound to the display language.
  * @param language - 'zh' or 'en'.
- * @returns `{ label, tone, detail, canRefresh }`, tone being one of
- *   'idle' | 'busy' | 'ok' | 'warn' | 'error'.
+ * @returns `{ label, tone, detail, title, canRefresh }`, tone being one of
+ *   'idle' | 'busy' | 'ok' | 'error'. `title` is the raw diagnostic, for a tooltip
+ *   and for anyone debugging.
  */
 function describeRefresh(state, t, language) {
   const current = state || createLiveState()
   const rows = current.data && isArray(current.data.releases) ? current.data.releases : []
-  const warnings = isArray(current.warnings) ? current.warnings : []
   const stamp = formatTimestamp(current.lastAttemptAt, language)
   const timePart = stamp ? t('live.lastUpdated', { time: stamp }) : ''
   // A rate limit or a previous failure still allows a manual retry — the budget
@@ -306,27 +330,34 @@ function describeRefresh(state, t, language) {
   const canRefresh = current.status !== 'loading'
 
   if (current.status === 'loading') {
-    return { label: t('live.refreshing'), tone: 'busy', detail: timePart, canRefresh: false }
+    return { label: t('live.refreshing'), tone: 'busy', detail: timePart, title: '', canRefresh: false }
   }
   if (current.status === 'error') {
+    // A localized summary in the line, the raw transport text in `title`: the
+    // driver string is not an explanation, but it is what a bug report needs.
+    // Whether anything was kept depends on whether a previous payload exists — a
+    // first run that fails kept nothing, and saying otherwise is a lie.
     return {
       label: t('live.error'),
       tone: 'error',
-      detail: [timePart, current.error].filter(Boolean).join(' · '),
+      detail: [timePart, t(rows.length > 0 ? 'live.errorKeptData' : 'live.errorNoData')].filter(Boolean).join(' · '),
+      title: typeof current.error === 'string' ? current.error : '',
       canRefresh: canRefresh,
     }
   }
-  if (current.status === 'ok' && current.rateLimited) {
-    // Distinct from a plain failure: the data is still good, but the notes source
-    // is out of budget, and the panel says exactly that instead of "refresh
-    // failed" or a silent success.
-    return { label: t('live.rateLimited'), tone: 'warn', detail: timePart, canRefresh: canRefresh }
-  }
   if (current.status === 'ok') {
-    // A lost source is surfaced as a count, not as a different tone: the fetch
-    // did succeed, and only rate limiting is a state the reader must act on.
-    const detail = warnings.length > 0 ? timePart + ' · ' + t('live.warning') + ' ' + warnings.length : timePart
-    return { label: t('live.liveVersions', { n: rows.length }), tone: 'ok', detail: detail, canRefresh: canRefresh }
+    // A down GitHub feed is an enrichment loss, not a failed refresh: the version
+    // list comes from npm and is complete without release notes. Saying "rate limit
+    // reached" here — and worse, "auto refresh turned off" — read as an error on a
+    // machine that simply is not logged in to GitHub.
+    const notices = sourceNotices(current)
+    const registryDown = notices.some((notice) => notice.key === 'live.notes.registryDown')
+    const notesDown = notices.some((notice) => notice.key !== 'live.notes.registryDown')
+    const short = [registryDown ? t('live.notes.shortRegistry') : '', notesDown ? t('live.notes.shortNotes') : '']
+      .filter(Boolean)
+      .join(' · ')
+    const detail = [timePart, short].filter(Boolean).join(' · ')
+    return { label: t('live.liveVersions', { n: rows.length }), tone: 'ok', detail: detail, title: '', canRefresh: canRefresh }
   }
   return { label: t('live.neverFetched'), tone: 'idle', detail: timePart, canRefresh: canRefresh }
 }
@@ -585,7 +616,7 @@ function LiveNoteGroups(props) {
  * @param props - `{ row, t, language }`.
  * @returns the release element.
  */
-function renderLiveRelease(props) {
+function LiveReleaseItem(props) {
   const row = props.row
   const t = props.t
   const language = props.language === 'zh' ? 'zh' : 'en'
@@ -649,7 +680,7 @@ function renderRefreshControls(props) {
         disabled: !status.canRefresh,
         // The button carries the status as its tooltip, so the reason it is
         // disabled (or what it will do) is reachable without extra chrome.
-        title: status.detail || t('live.refresh'),
+        title: status.title || status.detail || t('live.refresh'),
         onClick: () => {
           if (typeof props.onRefresh === 'function') props.onRefresh()
         },
@@ -660,7 +691,7 @@ function renderRefreshControls(props) {
     // header it stays visible while the release notes scroll.
     el(
       'span',
-      { className: 'dshcl-liveStatus ' + LIVE_STATUS_CLASS[status.tone] },
+      { className: LIVE_STATUS_CLASS[status.tone], title: status.title || undefined },
       el('span', null, status.label),
       status.detail ? el('span', { className: 'dshcl-liveDate' }, ' · ' + status.detail) : null,
     ),
@@ -683,8 +714,10 @@ function renderLiveNotes(props) {
   const language = props.language === 'zh' ? 'zh' : 'en'
   const state = props.state || createLiveState()
   const status = describeRefresh(state, t, language)
-  const warnings = isArray(state.warnings) ? state.warnings : []
   const rows = newestFirst(state.data && isArray(state.data.releases) ? state.data.releases : [])
+  // Localized sentences from the structured outcome — never the transport's own
+  // English warning text, which used to be rendered verbatim in this list.
+  const notices = sourceNotices(state).map((notice) => ({ text: t(notice.key, notice.params), key: notice.key }))
   return el(
     'section',
     { className: 'dshcl-live' },
@@ -694,14 +727,14 @@ function renderLiveNotes(props) {
       el('span', { className: 'dshcl-liveTitle' }, t('live.title')),
       // The control cluster itself lives in the panel header (see
       // renderRefreshControls) so it does not travel with a long release's notes.
-      el('span', { className: LIVE_STATUS_CLASS[status.tone] }, status.label),
+      el('span', { className: LIVE_STATUS_CLASS[status.tone], title: status.title || undefined }, status.label),
       status.detail ? el('span', { className: 'dshcl-liveDate' }, '· ' + status.detail) : null,
     ),
-    warnings.length > 0
+    notices.length > 0
       ? el(
           'ul',
-          { className: 'dshcl-liveWarn' },
-          warnings.map((warning, index) => el('li', { key: 'warn' + index }, warning)),
+          { className: 'dshcl-liveWarn', 'data-live-notice': notices.map((notice) => notice.key).join(' ') },
+          notices.map((notice) => el('li', { key: notice.key }, notice.text)),
         )
       : null,
     rows.length === 0
@@ -723,9 +756,12 @@ function renderLiveNotes(props) {
           // registry lists 30+ versions, which is a very large tree for a section
           // whose question is "what changed lately". Older versions stay reachable
           // in the rail.
-          rows.slice(0, LIVE_LIST_LIMIT).map((row, index) =>
-            renderLiveRelease({ row: row, t: t, language: language, key: row.version || index }),
-          ),
+          // Mounted as an element, not called as a function: a `key` passed into a
+          // plain function call never reaches React and produced a key warning for
+          // every row.
+          rows
+            .slice(0, LIVE_LIST_LIMIT)
+            .map((row, index) => el(LiveReleaseItem, { key: row.version || index, row: row, t: t, language: language })),
         ),
   )
 }
@@ -734,7 +770,7 @@ export {
   renderVersionBadge,
   renderLiveNotes,
   renderRefreshControls,
-  renderLiveRelease,
+  LiveReleaseItem,
   createLiveState,
   runRefresh,
   describeRefresh,

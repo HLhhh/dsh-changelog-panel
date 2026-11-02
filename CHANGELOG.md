@@ -4,6 +4,38 @@ All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] — 2026-11-02
+
+### Fixed
+
+- **A GitHub rate limit no longer reads as a failed refresh.** GitHub's REST API allows 60 unauthenticated
+  requests per hour per IP, so exhaustion is ordinary (shared NAT makes it likely). The panel announced
+  “GitHub API rate limit reached … auto refresh turned off” — with raw English transport text — although the
+  npm registry had answered and the version list was complete. Release notes are now treated as optional
+  enrichment: the status stays successful with a short “notes unavailable” hint, the live section shows one
+  localized sentence, and versions keep coming from npm. Only both sources failing is an error.
+- **Only GitHub can be described as a GitHub rate limit.** The failure text was applied to any 403/429, so a
+  refused npm registry request was reported as “GitHub API rate limit reached”. The transport now classifies
+  each source separately (`rate-limited` / `http` / `network`) and the UI localizes from that, never by
+  parsing the diagnostic string.
+- **A failed npm registry is no longer silent.** It used to pass without a hint: the version list was then built
+  from GitHub releases alone and could omit versions that have no release. Both sources now report their state
+  symmetrically — the registry failure says the list may be incomplete, the notes failure says notes are
+  unavailable — and the live section shows one localized notice per degraded source.
+- **Only an actually exhausted budget is reported as a quota.** `failureKind` classified every 403 as
+  `rate-limited`, so an abuse/secondary limit or a regional block was still described as “60 requests/hour
+  used up”. Classification now uses `x-ratelimit-remaining`, and a missing header no longer coerces to `0`
+  (`Number(null) === 0`, the original source of the false claim) — those cases render as a refusal instead.
+- **A first-run total failure no longer claims to have kept data.** The error line said “keeping the last
+  data” even when no cache existed. It now distinguishes “kept the last data” from “nothing to show yet”,
+  and the raw transport text moved into the status tooltip instead of being shown as the explanation.
+- **The sandbox reproduction ships with the repo**: `tests/rate-limit.mjs` (dependency-free, `npm test`)
+  stubs `fetch` and locks in the three cases above.
+- Dead producers/readers removed (`state.warnings` mirrors, the redundant `rateLimited` transport flag now
+  superseded by `sources`, `live.warning`, `live.rateLimited`), the module's self-documented wiring header was
+  corrected, and the status-line `warn` tone with its CSS was dropped because nothing returns it any more.
+- The live release list no longer logs a missing-`key` warning for every row.
+
 ## [0.1.2] — 2026-10-26
 
 ### Fixed
