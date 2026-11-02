@@ -342,80 +342,6 @@ const CSS = `
 .dshcl-title{margin:0;font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.01em}
 .dshcl-sub{margin:3px 0 0;font-size:12px;line-height:18px;color:var(--dsw-alias-label-tertiary,inherit)}
 .dshcl-search{flex:none;display:flex;align-items:center;gap:8px}
-.dshcl-storageHelp{padding:12px 16px}
-.dshcl-storageHelpList{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
-.dshcl-storageHelpList li{font-size:12px;line-height:19px;color:var(--dsw-alias-label-secondary,inherit)}
-.dshcl-storageSelection{position:sticky;top:0;z-index:2;background:var(--dsw-specific-menu,var(--dsw-alias-bg-base,Canvas));box-shadow:var(--dsw-elevation-subtle,none)}
-.dshcl-storageSelectionText{width:100%;box-sizing:border-box;margin-top:8px;min-height:76px;font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:11px;line-height:17px;color:var(--dsw-alias-label-secondary,inherit);background:var(--dsw-alias-fill-l1,rgba(128,128,128,.06));border:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.22));border-radius:var(--dsw-radius-md,8px);padding:8px;resize:vertical}
-.dshcl-chartTotal{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:8px 2px 0;border-top:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.2));margin-top:2px}
-.dshcl-chartTotalLabel{font-size:11.5px;line-height:17px;color:var(--dsw-alias-label-tertiary,inherit)}
-.dshcl-chartTotalValue{font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:15px;font-weight:600;line-height:22px;color:var(--dsw-alias-label-primary,inherit)}
-.dshcl-viewSwitch{margin-right:4px}
-.dshcl-viewSwitch .dshcl-langBtn{min-width:44px}
-.dshcl-chartWrap{display:flex;flex-direction:column;gap:8px}
-.dshcl-chartTreemap{position:relative;width:100%;height:240px;border-radius:var(--dsw-radius-lg,10px);overflow:hidden;background:var(--dsw-alias-fill-l1,rgba(128,128,128,.06))}
-.dshcl-chartTile{position:absolute;box-sizing:border-box;border:.5px solid var(--dsw-alias-bg-base,Canvas);overflow:hidden;display:flex;align-items:flex-start;padding:7px 9px;background:var(--dsw-alias-fill-l2,rgba(128,128,128,.16))}
-.dshcl-chartTileLocked{background:color-mix(in srgb,var(--dsw-alias-state-error-primary,#d94a4a) 22%,transparent)}
-.dshcl-chartTileFree{background:color-mix(in srgb,var(--dsw-alias-state-success-primary,#2f9e63) 22%,transparent)}
-.dshcl-chartTileCare{background:color-mix(in srgb,var(--dsw-alias-state-warning-primary,#c58a20) 22%,transparent)}
-.dshcl-chartTileLabel{display:flex;flex-direction:column;gap:1px;min-width:0}
-.dshcl-chartTileName{font-size:11.5px;line-height:16px;font-weight:600;color:var(--dsw-alias-label-primary,inherit);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dshcl-chartTileValue{font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:10.5px;line-height:15px;color:var(--dsw-alias-label-secondary,inherit);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dshcl-chartBars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.dshcl-chartBarRow{display:flex;align-items:center;gap:10px}
-.dshcl-chartBarLabel{flex:0 0 30%;font-size:11.5px;line-height:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dshcl-chartBarTrack{flex:1;height:10px;border-radius:999px;background:var(--dsw-alias-fill-l2,rgba(128,128,128,.14));overflow:hidden}
-.dshcl-chartBarFill{display:block;height:100%;border-radius:999px;background:var(--dsw-alias-state-info-primary,#3b7ddd)}
-.dshcl-chartBarFillLocked{background:var(--dsw-alias-state-error-primary,#d94a4a)}
-.dshcl-chartBarFillFree{background:var(--dsw-alias-state-success-primary,#2f9e63)}
-.dshcl-chartBarFillCare{background:var(--dsw-alias-state-warning-primary,#c58a20)}
-.dshcl-chartBarValue{flex:0 0 84px;text-align:right;font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:11px;color:var(--dsw-alias-label-secondary,inherit)}
-.dshcl-storageMain{display:block;padding:18px 22px 56px}
-.dshcl-storage{display:flex;flex-direction:column;gap:18px}
-.dshcl-storageSection{border-radius:var(--dsw-radius-lg,10px);border:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.22));padding:14px 16px 16px;background:var(--dsw-alias-fill-l1,rgba(128,128,128,.03))}
-.dshcl-storageSummary{display:flex;flex-direction:column;gap:10px}
-.dshcl-storageStats{display:flex;flex-wrap:wrap;gap:18px}
-.dshcl-storageStat{display:flex;flex-direction:column;gap:2px;min-width:96px}
-.dshcl-storageStatLabel{font-size:11px;line-height:16px;color:var(--dsw-alias-label-tertiary,inherit)}
-.dshcl-storageStatValue{font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:17px;font-weight:600;line-height:24px;color:var(--dsw-alias-label-primary,inherit)}
-.dshcl-storageStatus{display:flex;align-items:center;gap:8px;font-size:12px;line-height:18px;color:var(--dsw-alias-label-tertiary,inherit)}
-.dshcl-storageStatusBusy{color:var(--dsw-alias-state-info-primary,#3b7ddd)}
-.dshcl-storageStatusOk{color:var(--dsw-alias-state-success-primary,#2f9e63)}
-.dshcl-storageStatusError{color:var(--dsw-alias-state-error-primary,#d94a4a)}
-.dshcl-storageStatusDetail{color:var(--dsw-alias-label-tertiary,inherit)}
-.dshcl-storageControls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.dshcl-storageBtn{font-size:12px}
-.dshcl-storagePath{font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:11px;color:var(--dsw-alias-label-tertiary,inherit);word-break:break-all}
-.dshcl-storageSize{font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:12px;font-variant-numeric:tabular-nums;color:var(--dsw-alias-label-primary,inherit);flex:none}
-.dshcl-storageRow{display:flex;align-items:center;gap:10px;padding:5px 0}
-.dshcl-storageBar{flex:1;min-width:60px;height:6px;border-radius:999px;background:var(--dsw-alias-fill-l2,rgba(128,128,128,.14));overflow:hidden}
-.dshcl-storageBarFill{height:100%;border-radius:999px;background:var(--dsw-alias-state-info-primary,#3b7ddd)}
-.dshcl-storageReclaim{flex:none;border-radius:999px;padding:0 7px;font-size:10px;line-height:16px;border:.5px solid currentColor}
-.dshcl-storageReclaimNever{color:var(--dsw-alias-label-tertiary,inherit)}
-.dshcl-storageReclaimAll{color:var(--dsw-alias-state-success-primary,#2f9e63)}
-.dshcl-storageReclaimSome{color:var(--dsw-alias-state-warning-primary,#c58a20)}
-.dshcl-storageReclaimUnknown{color:var(--dsw-alias-label-tertiary,inherit)}
-.dshcl-storageWorkdir{border-left:2px solid var(--dsw-alias-border-l2,rgba(128,128,128,.3));padding-left:10px}
-.dshcl-storageWorkdirName{font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:12px;word-break:break-all}
-.dshcl-storageWorkdirChild{font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace);font-size:11px;color:var(--dsw-alias-label-secondary,inherit);word-break:break-all;margin-right:auto}
-.dshcl-storageDetail{display:flex;flex-direction:column;gap:3px;margin:4px 0 0 18px;padding-left:10px;border-left:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.2))}
-.dshcl-storageDetailRow{display:flex;align-items:center;gap:10px;font-size:11.5px;line-height:18px}
-.dshcl-storageDetailValue{color:var(--dsw-alias-label-tertiary,inherit);font-family:var(--dsw-font-mono,ui-monospace,Menlo,monospace)}
-.dshcl-storageWorkspace{margin-top:12px}
-.dshcl-storageSession{display:flex;align-items:flex-start;gap:10px;padding:7px 9px;border-radius:var(--dsw-radius-md,8px)}
-.dshcl-storageSession:hover{background:var(--dsw-alias-fill-l1,rgba(128,128,128,.06))}
-.dshcl-storageMeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;line-height:17px;color:var(--dsw-alias-label-tertiary,inherit)}
-.dshcl-storageActions{display:flex;gap:6px;margin-left:auto;flex:none;opacity:.35;transition:opacity .12s}
-.dshcl-storageSession:hover .dshcl-storageActions,.dshcl-storageSession:focus-within .dshcl-storageActions{opacity:1}
-.dshcl-storageSubs{margin-left:22px;border-left:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.24));padding-left:8px}
-.dshcl-storageSubRow{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11.5px;line-height:17px;color:var(--dsw-alias-label-secondary,inherit)}
-.dshcl-storagePlanRow{display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:var(--dsw-radius-md,8px);border:.5px solid transparent}
-.dshcl-storagePlanRow:hover{background:var(--dsw-alias-fill-l1,rgba(128,128,128,.06))}
-.dshcl-storagePlanRowLow{border-style:dashed;border-color:var(--dsw-alias-border-l2,rgba(128,128,128,.28))}
-.dshcl-storageReason{font-size:11px;line-height:17px;color:var(--dsw-alias-label-tertiary,inherit);max-width:60ch}
-.dshcl-storageFoot{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.2))}
-.dshcl-storageArm{font-size:11px;color:var(--dsw-alias-state-warning-primary,#c58a20)}
-.dshcl-storageArmOn{color:var(--dsw-alias-state-error-primary,#d94a4a);font-weight:600}
 .dshcl-installedPill{color:var(--dsw-alias-label-tertiary,inherit)}
 .dshcl-live{margin-top:26px;border-top:.5px solid var(--dsw-alias-border-l1,rgba(128,128,128,.22));padding-top:14px}
 .dshcl-liveHead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -1162,19 +1088,18 @@ function ChangelogPanel(props) {
     return map
   }, [features])
 
-  // Read the host report once for the running version. A failure here is silent by
-  // design: the badge falls back to the baked value rather than blocking the panel.
+  // Read the version file the host half wrote. A failure is silent by design: the
+  // badge renders "unknown" rather than blocking the panel, and only a standalone
+  // render (no plugin context) falls back to the build-time value.
   React.useEffect(() => {
     let cancelled = false
     if (!props.ctx) return undefined
     void (async () => {
       try {
-        const loaded = await loadStorageReport(props.ctx, undefined)
-        const host = loaded && loaded.report && loaded.report.host ? loaded.report.host : null
-        const version = host && typeof host.dshVersion === 'string' ? host.dshVersion : ''
-        if (!cancelled && version !== '' && version !== 'unknown') setRuntimeVersion(version)
+        const loaded = await loadInstalledVersion(props.ctx, undefined)
+        if (!cancelled && loaded && loaded.version) setRuntimeVersion(loaded.version)
       } catch {
-        // The report is optional for this panel; keep the baked fallback.
+        // The version file is optional for this panel.
       }
     })()
     return () => {
@@ -1398,123 +1323,6 @@ const zh = {
   'empty.features': '当前筛选下没有匹配的特性。',
   'empty.advisories': '当前筛选下没有匹配的漏洞记录。',
   'empty.release': '暂无版本数据。',
-  'storage.help.title': '怎么用',
-  'storage.help.what': '这里显示 DSH 在本地磁盘留下了什么、各占多少。数字全部来自宿主端实测扫描，面板不做估算。',
-  'storage.help.reclaim': '「不建议删除」是运行时本体（Python/Node），删了 DSH 就跑不起来；「可再生」是缓存，删了会自动重建；「需确认」要你自己判断。',
-  'storage.help.how': '要清理时直接对 Agent 说「清理存储」，它会调用 storage_report 给出账单、storage_cleanup 执行删除。看板只负责显示，不发起删除。',
-  'storage.help.readonly': '看板是只读的，这是设计而非缺陷：浏览器端没有文件系统权限，也无法调用宿主，所以删除只能由 Agent 执行。',
-  'storage.title': '存储占用',
-  'storage.status.idle': '尚未读取报告',
-  'storage.status.loading': '正在读取报告…',
-  'storage.status.ready': '报告已载入',
-  'storage.status.scanError': '主机端扫描失败',
-  'storage.status.readError': '读取报告失败',
-  'storage.refresh': '重新读取报告',
-  'storage.refreshing': '读取中…',
-  'storage.rescan': '请求重新扫描',
-  'storage.empty': '还没有存储报告。点下面的按钮让主机端扫描一次。',
-  'storage.summary.note': '所有数字都来自主机端扫描报告，面板不做估算。',
-  'storage.summary.total': '磁盘占用合计',
-  'storage.summary.totalNote': '各分类实测之和；未计量的分类不在其中。',
-  'storage.summary.reclaimable': '可回收',
-  'storage.summary.reclaimableNote': '回收计划里所有条目的合计，不代表它们都已被确认可删。',
-  'storage.summary.noPlan': '报告里没有回收计划。',
-  'storage.summary.generatedAt': '扫描时间',
-  'storage.summary.scanTime': '扫描耗时',
-  'storage.summary.ms': '{n} 毫秒',
-  'storage.summary.sessions': '会话',
-  'storage.summary.sessionsValue': '{n} 个（含 {subs} 个子会话）',
-  'storage.summary.dshVersion': '本机 DSH 版本：{version}',
-  'storage.summary.dshVersionSource': '来源：{source}',
-  'storage.summary.home': 'DSH 目录',
-  'storage.summary.workspace': '工作区',
-  'storage.reportError': '扫描器报告了错误',
-  'storage.cost.title': '空间去向',
-  'storage.cost.sub': '按实测大小从大到小排列；条形是相对最大一项的比例，百分比是占已计量合计的比例。',
-  'storage.cost.share': '占 {pct}',
-  'storage.cost.detailNote': '明细是实测的子目录；散落文件不单独列出，所以明细相加可能小于该行合计。',
-  'storage.cost.unmeasured': '本次扫描未计量',
-  'storage.cost.empty': '报告里没有可分类的实测数据。',
-  'storage.cost.neverDetail': '以下文件由 DSH 运行时使用：删除后 DSH 将无法运行。',
-  'storage.cost.attachments': '{count} 个对象，其中 {orphans} 个没有任何会话引用（{size}）',
-  'storage.cost.more': '另有 {n} 项未显示',
-  'storage.cost.files': '{n} 个文件',
-  'storage.cost.profileActive': '使用中',
-  'storage.sessions.title': '会话与占用',
-  'storage.sessions.sub': '按工作区分组，组间与组内都按实测大小从大到小排列。',
-  'storage.sessions.shareNote': '子会话与父会话共用同一份日志，因此列在父会话下面。',
-  'storage.sessions.empty': '报告里没有会话目录。',
-  'storage.sessions.unresolved': '{n} 个子会话没能匹配到父会话，单独列出。',
-  'storage.sessions.attributionOff': '未能解压会话日志，子会话归属不可用。',
-  'storage.sessions.subCount': '含 {n} 个子会话',
-  'storage.group.unknown': '未记录工作区',
-  'storage.group.subtotal': '{sessions} 个会话 · {size}',
-  'storage.turns': '{n} 轮',
-  'storage.turnsUnknown': '轮数未知',
-  'storage.modified': '最后修改 {date}',
-  'storage.badge.pinned': '已固定',
-  'storage.badge.archived': '已归档',
-  'storage.badge.unprojected': '无投影',
-  'storage.badge.unprojectedTitle': '这个会话没有缓存投影，标题与轮数无法读取。',
-  'storage.badge.subagent': '子会话',
-  'storage.badge.orphan': '父会话未识别',
-  'storage.action.open': '打开对话',
-  'storage.action.reveal': '在访达中显示',
-  'storage.subagent.otherCwd': '运行目录 {cwd}',
-  'storage.plan.title': '回收计划',
-  'storage.plan.sub': '{n} 项 · 合计 {size}',
-  'storage.plan.scope': '计划只包含配置档案、浏览器缓存、无引用附件和已归档会话；运行时二进制不在其中。',
-  'storage.plan.disclaimer': '条目与理由都来自扫描器；标为「仅建议」的条目只是线索，不是结论。',
-  'storage.plan.empty': '这份报告里没有可回收项。',
-  'storage.plan.select': '选择',
-  'storage.plan.deselect': '取消选择',
-  'storage.plan.confirmSelect': '再次点击确认',
-  'storage.plan.armTitle': '这一项影响较大：需要点两次才会被选中。',
-  'storage.plan.trash': '移到废纸篓',
-  'storage.plan.trashing': '正在移到废纸篓…',
-  'storage.plan.trashNote': '项目会被移到系统废纸篓，可在访达里「放回原处」还原。',
-  'storage.plan.selected': '已选 {n} 项 · {size}',
-  'storage.result.title': '上次回收结果',
-  'storage.result.moved': '已移到废纸篓 {n} 项',
-  'storage.result.failed': '失败 {n} 项',
-  'storage.result.skipped': '跳过 {n} 项',
-  'storage.chart.total': '总计',
-  'storage.view.label': '显示方式',
-  'storage.view.chart': '图表',
-  'storage.view.list': '列表',
-  'storage.workdir.chartContainers': '另有 {n} 个窗口是父目录，其空间已由下方的子窗口分别表示，不重复计入',
-  'storage.workdir.chartNested': '另有 {n} 个窗口自有体积为 0，未画入图表',
-  'storage.workdir.title': '其他窗口的产物',
-  'storage.workdir.sub': '每个窗口在自己的工作目录里生成的文件和脚本，按体积排序。这些目录就是它们的实际位置。',
-  'storage.workdir.sessions': '{n} 个会话',
-  'storage.workdir.contains': '本行已扣除 {n} 个子窗口（{size}），它们单独列在下方',
-  'storage.workdir.dedupe': '嵌套目录已去重，避免重复计算 {size}',
-  'storage.workdir.notReclaimable': '注意：这些是你自己的项目文件，不属于 DSH 存储，永远不列为可回收。',
-  'storage.workdir.flat': '没有子目录，文件直接放在根目录',
-  'storage.workdir.allNested': '全部在子窗口内',
-  'storage.workdir.missing': '这个目录已经不在了（会话记录仍在）',
-  'storage.workdir.empty': '没有记录到任何工作目录',
-  'storage.result.refreshHint': '重新读取报告即可刷新上面的列表。',
-  'storage.category.runtimes': '运行时二进制',
-  'storage.category.plugins': '插件配置档案',
-  'storage.category.sessions': '会话日志',
-  'storage.category.attachments': '附件对象',
-  'storage.category.browserCache': '浏览器缓存',
-  'storage.category.caches': '缓存与索引',
-  'storage.category.workspace': '工作区文件',
-  'storage.category.other': '其他（未计量）',
-  'storage.reclaim.never': '不建议删除',
-  'storage.reclaim.all': '可安全重建',
-  'storage.reclaim.some': '需要自行判断',
-  'storage.reclaim.unknown': '扫描器未标注',
-  'storage.confidence.high': '高置信度',
-  'storage.confidence.medium': '中置信度',
-  'storage.confidence.low': '低置信度 · 仅建议',
-  'storage.plan.kind.profile': '配置档案',
-  'storage.plan.kind.browserCache': '浏览器缓存',
-  'storage.plan.kind.attachment': '附件对象',
-  'storage.plan.kind.session': '已归档会话',
-  'storage.plan.kind.other': '其他',
 }
 
 const en = {
@@ -1596,123 +1404,6 @@ const en = {
   'empty.features': 'No matching features under the current filter.',
   'empty.advisories': 'No matching advisories under the current filter.',
   'empty.release': 'No release data available.',
-  'storage.help.title': 'How to use this',
-  'storage.help.what': 'This shows what DSH leaves on disk and what each part costs. Every number comes from a real host-side scan; the panel estimates nothing.',
-  'storage.help.reclaim': '“Not recommended” is the runtime itself (Python/Node) — deleting it stops DSH from running. “Regenerable” is cache that rebuilds itself. “Review” is your call.',
-  'storage.help.how': 'To reclaim space, just ask the agent to “clean up storage”. It calls storage_report for the figures and storage_cleanup to do the deletion. This panel only displays; it never initiates a delete.',
-  'storage.help.readonly': 'The dashboard is read-only by design, not by omission: the browser half has no filesystem authority and cannot call the host, so deletion can only run through the agent.',
-  'storage.title': 'Storage on disk',
-  'storage.status.idle': 'Report not read yet',
-  'storage.status.loading': 'Reading the report…',
-  'storage.status.ready': 'Report loaded',
-  'storage.status.scanError': 'Host scan failed',
-  'storage.status.readError': 'Could not read the report',
-  'storage.refresh': 'Reload report',
-  'storage.refreshing': 'Reading…',
-  'storage.rescan': 'Rescan now',
-  'storage.empty': 'No storage report yet. Use the button below to run a host-side scan.',
-  'storage.summary.note': 'Every number comes from the host scan report; the panel estimates nothing.',
-  'storage.summary.total': 'Total on disk',
-  'storage.summary.totalNote': 'The sum of the measured categories; unmeasured ones are not included.',
-  'storage.summary.reclaimable': 'Reclaimable',
-  'storage.summary.reclaimableNote': 'The sum of every item in the reclaim plan — not all of them are confirmed safe to delete.',
-  'storage.summary.noPlan': 'The report carries no reclaim plan.',
-  'storage.summary.generatedAt': 'Scanned',
-  'storage.summary.scanTime': 'Scan time',
-  'storage.summary.ms': '{n} ms',
-  'storage.summary.sessions': 'Conversations',
-  'storage.summary.sessionsValue': '{n} ({subs} subagents)',
-  'storage.summary.dshVersion': 'Running DSH version: {version}',
-  'storage.summary.dshVersionSource': 'source: {source}',
-  'storage.summary.home': 'DSH home',
-  'storage.summary.workspace': 'Workspace',
-  'storage.reportError': 'The scanner reported an error',
-  'storage.cost.title': 'Where the space goes',
-  'storage.cost.sub': 'Largest measured first; each bar is relative to the biggest row and the percentage is of the measured total.',
-  'storage.cost.share': '{pct} of the measured total',
-  'storage.cost.detailNote': 'Detail rows are the measured subdirectories; loose files are not listed separately, so they may add up to less than the row\'s total.',
-  'storage.cost.unmeasured': 'not measured by this scan',
-  'storage.cost.empty': 'The report has no measured categories.',
-  'storage.cost.neverDetail': 'These files belong to the DSH runtime; deleting them stops DSH from running.',
-  'storage.cost.attachments': '{count} objects, {orphans} of them referenced by no session ({size})',
-  'storage.cost.more': '{n} more not shown',
-  'storage.cost.files': '{n} files',
-  'storage.cost.profileActive': 'in use',
-  'storage.sessions.title': 'Conversations and what they cost',
-  'storage.sessions.sub': 'Grouped by workspace; groups and rows are ordered by measured size, largest first.',
-  'storage.sessions.shareNote': 'Subagent sessions share the parent\'s log, so they are listed under it.',
-  'storage.sessions.empty': 'The report lists no session directories.',
-  'storage.sessions.unresolved': '{n} subagent sessions could not be matched to a parent and are listed on their own.',
-  'storage.sessions.attributionOff': 'Session logs could not be decompressed, so subagent attribution is unavailable.',
-  'storage.sessions.subCount': '{n} subagents',
-  'storage.group.unknown': 'No recorded workspace',
-  'storage.group.subtotal': '{sessions} conversations · {size}',
-  'storage.turns': '{n} turns',
-  'storage.turnsUnknown': 'turn count unknown',
-  'storage.modified': 'modified {date}',
-  'storage.badge.pinned': 'pinned',
-  'storage.badge.archived': 'archived',
-  'storage.badge.unprojected': 'no projection',
-  'storage.badge.unprojectedTitle': 'This session has no cached projection, so its title and turn count cannot be read.',
-  'storage.badge.subagent': 'subagent',
-  'storage.badge.orphan': 'parent not identified',
-  'storage.action.open': 'Open conversation',
-  'storage.action.reveal': 'Show in Finder',
-  'storage.subagent.otherCwd': 'ran in {cwd}',
-  'storage.plan.title': 'Reclaim plan',
-  'storage.plan.sub': '{n} items · {size} total',
-  'storage.plan.scope': 'The plan only ever covers plugin profiles, browser cache, unreferenced attachments and archived sessions; runtime binaries are never in it.',
-  'storage.plan.disclaimer': 'Items and reasons come from the scanner; anything marked “suggestion only” is a lead, not a verdict.',
-  'storage.plan.empty': 'This report has nothing to reclaim.',
-  'storage.plan.select': 'Select',
-  'storage.plan.deselect': 'Deselect',
-  'storage.plan.confirmSelect': 'Click again to confirm',
-  'storage.plan.armTitle': 'This item matters: it takes two clicks to select it.',
-  'storage.plan.trash': 'Move to Trash',
-  'storage.plan.trashing': 'Moving to Trash…',
-  'storage.plan.trashNote': 'Items go to the OS Trash and can be put back from Finder.',
-  'storage.plan.selected': '{n} selected · {size}',
-  'storage.result.title': 'Last reclaim result',
-  'storage.result.moved': '{n} moved to the Trash',
-  'storage.result.failed': '{n} failed',
-  'storage.result.skipped': '{n} skipped',
-  'storage.chart.total': 'Total',
-  'storage.view.label': 'Display mode',
-  'storage.view.chart': 'Charts',
-  'storage.view.list': 'List',
-  'storage.workdir.chartContainers': '{n} window(s) are parent directories whose space is shown by the child windows below, not counted twice',
-  'storage.workdir.chartNested': '{n} window(s) hold no files of their own and are not charted',
-  'storage.workdir.title': 'Files from other windows',
-  'storage.workdir.sub': 'What each window generated in its own working directory, largest first. These directories are where those files actually live.',
-  'storage.workdir.sessions': '{n} session(s)',
-  'storage.workdir.contains': 'Excludes {n} nested window(s) ({size}), listed separately below',
-  'storage.workdir.dedupe': 'Nested directories deduplicated; {size} is counted once',
-  'storage.workdir.notReclaimable': 'Note: these are your own project files, not DSH storage, so they are never offered for reclamation.',
-  'storage.workdir.flat': 'No subdirectories; files sit in the root',
-  'storage.workdir.allNested': 'all inside nested windows',
-  'storage.workdir.missing': 'This directory no longer exists (the session record remains)',
-  'storage.workdir.empty': 'No working directory recorded',
-  'storage.result.refreshHint': 'Reload the report to refresh the list above.',
-  'storage.category.runtimes': 'Runtime binaries',
-  'storage.category.plugins': 'Plugin profiles',
-  'storage.category.sessions': 'Session logs',
-  'storage.category.attachments': 'Attachment objects',
-  'storage.category.browserCache': 'Browser cache',
-  'storage.category.caches': 'Caches and indexes',
-  'storage.category.workspace': 'Workspace files',
-  'storage.category.other': 'Other (not measured)',
-  'storage.reclaim.never': 'Do not delete',
-  'storage.reclaim.all': 'Safe to regenerate',
-  'storage.reclaim.some': 'Review before deleting',
-  'storage.reclaim.unknown': 'Not stated by the scan',
-  'storage.confidence.high': 'high confidence',
-  'storage.confidence.medium': 'medium confidence',
-  'storage.confidence.low': 'low confidence · suggestion only',
-  'storage.plan.kind.profile': 'Plugin profile',
-  'storage.plan.kind.browserCache': 'Browser cache',
-  'storage.plan.kind.attachment': 'Attachment object',
-  'storage.plan.kind.session': 'Archived session',
-  'storage.plan.kind.other': 'Other',
 }
 
 /** Locale namespace owned by this plugin. */
@@ -1752,28 +1443,6 @@ function apply(ctx) {
   // ── storage dashboard ─────────────────────────────────────────────────────
   // A second panel under its own id. It shares the `main` keyed slot and the same
   // `sidebar.panellist` list, which is exactly what that pair of seats is for.
-  const storageSlot = () => ({
-    name: 'main',
-    key: STORAGE_PANEL_ID,
-    locale: NS,
-    inject: () => ({
-      t: t(),
-      locale: ctx.locale,
-      ctx: ctx,
-      // The session list authorizes one file read; the Host resolves the workspace
-      // root from the named session itself, so only the id crosses the wire.
-      sessions: ctx.sessions,
-      uiWorkspace: ctx.get('uiWorkspace'),
-    }),
-  })
-  const storageIconSlot = () => ({
-    name: 'sidebar.panellist',
-    id: STORAGE_PANEL_ID,
-    order: 31,
-    locale: NS,
-    label: () => t()('storage.title'),
-  })
-
   // One effect owns both registrations so nothing is registered twice. A
   // registration's injected props are fixed at registration time, so a change of
   // GUI language would otherwise leave the panel on its original dictionary;
@@ -1789,8 +1458,6 @@ function apply(ctx) {
         disposers = [
           ctx.slots.inject('main', () => ctx.slots.register(mainSlot(), ChangelogPanel)),
           ctx.slots.inject('sidebar.panellist', () => ctx.slots.register(iconSlot(), ChangelogIcon)),
-          ctx.slots.inject('main', () => ctx.slots.register(storageSlot(), StorageDashboard)),
-          ctx.slots.inject('sidebar.panellist', () => ctx.slots.register(storageIconSlot(), StorageIcon)),
         ]
       }
       register()

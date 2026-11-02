@@ -4,6 +4,24 @@ All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] — 2026-11-02
+
+### Removed
+
+- **The storage dashboard and its reclaim tools are gone.** The feature shipped incomplete: it could report
+  disk usage and hand a plan to the Agent, but the panel could not act on it, and its numbers depended on a
+  full disk scan on every plugin load. Removed: the storage panel and its registration, the storage
+  scan/report, the `storage_report` / `storage_cleanup` / `storage_open` Agent tools, and the storage report
+  files. The sidebar has one entry again, as the plugin's name says.
+- The host half no longer scans the disk. It keeps one job: detect the running DSH version and write it to
+  `.dsh-changelog/version.json`, so the installed-version badge still follows the running app instead of the
+  build-time value. An unknown version stays unknown.
+
+### Changed
+
+- `lib/client.js` is about a third smaller; the storage dashboard was the bulk of it.
+- `README` / `README_zh.md` and `AGENTS.md` no longer describe a storage feature.
+
 ## [0.1.3] — 2026-11-02
 
 ### Fixed

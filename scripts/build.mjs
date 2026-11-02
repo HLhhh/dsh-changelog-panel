@@ -126,8 +126,7 @@ const dataBlocks = DATA_MODULES.flatMap((file) => {
 const CLIENT_SOURCES = [
   'client/live-data.mjs',
   'client/fetched.mjs',
-  'client/storage-panel.mjs',
-  'client/storage-client.mjs',
+  'client/installed-version.mjs',
   'client/index.mjs',
 ]
 const clientBlocks = CLIENT_SOURCES.map((file) => [file, stripModuleSyntax(readSource(file), file)])
@@ -139,7 +138,7 @@ const clientExports = [...new Set(clientBlocks.flatMap(([, block]) => block.expo
  * The sources are concatenated into ONE scope, where a duplicate `function` or
  * `const` is either a redeclaration error or — for a function — a silent override
  * of the earlier definition. A real collision (`describeFailure` in both
- * live-data.mjs and storage-client.mjs) shipped undetected because nothing here
+ * live-data.mjs and another module) shipped undetected because nothing here
  * checked, and it quietly broke the live changelog's rate-limit message.
  */
 function assertNoClientCollisions(blocks) {
