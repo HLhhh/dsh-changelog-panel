@@ -5,14 +5,13 @@
 > GitHub 主仓：<https://github.com/HLhhh/dsh-changelog-panel> ·
 > Gitee 镜像：<https://gitee.com/huang-lin-java/dsh-changelog-panel>
 
-**给 DeepSeek Harness 用的中英双语「更新日志 / 漏洞公告 / 存储占用」面板。** 装上之后，左侧栏多一个入口，
-点开就能看每个版本改了什么、有哪些 CVE/GHSA 影响本机、以及 DSH 在你磁盘上留下了多少东西。
+**给 DeepSeek Harness 用的中英双语「更新日志 / 漏洞公告」面板。** 装上之后，左侧栏多一个入口，
+点开就能看每个版本改了什么、有哪些 CVE/GHSA 影响本机。
 
 - 版本时间轴 + 按分类分组的特性卡片 + 关键字搜索
 - 「漏洞与安全」标签页：13 条公告，带严重级别、影响范围、修复版本与外链
 - 本机安装版本徽章，并标出与官方最新版的关系
 - 面板自带中英切换，不跟随全局也不会污染全局
-- 另附存储看板：DSH 在本地磁盘留下了什么、各占多少、属于哪个对话、哪些可以回收
 
 ## 它长什么样
 
@@ -98,12 +97,6 @@ dsh plugin --profile web remove dsh-changelog-panel
 - 读不到本机版本时显示「未知」（无法比较），**不会**用构建时的版本冒充。运行版本在运行时读取
   （`Info.plist`、`app.asar` 内的应用清单，或 Electron 的 `app.getVersion()`）。
 
-### 存储看板
-
-同一插件附带的存储视图：显示 DSH 在本地磁盘上留下了什么（会话日志、附件、缓存、运行时等）、
-各占多少容量、属于哪个对话、哪些可以回收到「废纸篓」。**只报告，不替你删**，
-不可回收的类别会直接标注原因。
-
 ## 配置
 
 本插件没有配置项，装上即用。语言是面板自己的状态（右上角「中文 / EN」），
@@ -123,8 +116,7 @@ dsh plugin --profile web remove dsh-changelog-panel
 - **尚未发布 npm**：只能通过 GitHub 或本地路径安装
 - 内置数据集是某个时间点的快照；要看当前版本请用「手动刷新」拉实时数据
 - 实时发布说明依赖 `api.github.com`；被限流或不可达时，面板继续用 npm 的版本列表工作，并显示本地化提示。
-  版本来源与尝试记录可在存储看板查看（报告里的 `host.dshVersionSource` / `dshVersionChecked`）
-- 存储看板的容量数字完全来自扫描当次的报告，不做推算
+  版本来源与尝试记录写在 `.dsh-changelog/version.json`（`source` / `checked`）
 - 中文条目是**转述**而非公告原文引用，正式合规判断请以外链原文为准
 
 ## 开发

@@ -1,7 +1,7 @@
 {
   "name": "dsh-changelog-panel",
-  "version": "0.1.3",
-  "description": "Bilingual DeepSeek Harness changelog and vulnerability panel: version timeline, security advisories, and a local storage dashboard.",
+  "version": "0.1.4",
+  "description": "Bilingual DeepSeek Harness changelog and vulnerability panel: version timeline, security advisories, live official notes.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {

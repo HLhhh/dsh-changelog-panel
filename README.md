@@ -5,16 +5,13 @@
 > Primary repo: <https://github.com/HLhhh/dsh-changelog-panel> ·
 > Gitee mirror: <https://gitee.com/huang-lin-java/dsh-changelog-panel>
 
-**A bilingual changelog, security-advisory, and storage panel for DeepSeek Harness.** Install it and the
-sidebar gains one entry: what changed in every release, which CVE/GHSA records affect your install, and how
-much disk space DSH itself is holding.
+**A bilingual changelog and security-advisory panel for DeepSeek Harness.** Install it and the sidebar
+gains one entry: what changed in every release, and which CVE/GHSA records affect your install.
 
 - Version timeline with category-grouped feature cards and keyword search
 - A **Security** tab: 13 advisories with severity, affected range, fixed version, and source links
 - An installed-version badge that tells you how it compares to the official latest
 - Per-panel language switch (zh / en) that neither follows nor changes the rest of the shell
-- A companion storage dashboard: what DSH leaves on disk, what each item costs, which conversation owns it,
-  and which parts are reclaimable
 
 ## What it looks like
 
@@ -101,13 +98,6 @@ The panel talks to two public endpoints **directly from your browser**; no third
   the version the bundle was built with. The running version is read at runtime (`Info.plist`, the app
   manifest inside `app.asar`, or Electron's `app.getVersion()`).
 
-### Storage dashboard
-
-The same plugin also ships a storage view: what DSH has written to your disk (session logs, attachments,
-caches, runtime binaries), how much each item costs, which conversation owns it, and what can be moved to
-the OS trash. It **only reports** — it never deletes on your behalf — and categories that must not be
-reclaimed say why.
-
 ## Configuration
 
 None. Language is the panel's own state (the 中文 / EN toggle in its header); it follows the shell locale by
@@ -127,9 +117,7 @@ default and only affects this panel.
 - **No npm release yet** — GitHub or a local path only
 - The built-in dataset is a point-in-time snapshot; use the manual refresh for current data
 - Live notes need `api.github.com`; when it is rate-limited or unreachable the panel keeps working from npm
-  (versions only) and shows a localized notice. Status and provenance of the version lookup are visible in
-  the storage dashboard (`host.dshVersionSource` / `dshVersionChecked` in the report)
-- Storage figures come verbatim from the scan report; nothing is extrapolated
+  (versions only) and shows a localized notice
 - Chinese entries are paraphrases, not quotations of the original advisories — consult the linked sources
   for compliance decisions
 
